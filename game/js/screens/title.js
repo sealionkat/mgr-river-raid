@@ -17,9 +17,7 @@ game.TitleScreen = me.ScreenObject.extend({
 			1
 		);
 
-		//me.game.world.addChild(new BackgroundLayer('bgb-480x800', 1));
 		me.input.bindKey(me.input.KEY.ENTER, 'enter', true);
-		me.input.bindKey(me.input.KEY.SPACE, 'enter', true);
 
 		this.handler = me.event.subscribe(me.event.KEYDOWN, function(action, keyCode, edge) {
 			if(action == 'enter') {
@@ -32,7 +30,6 @@ game.TitleScreen = me.ScreenObject.extend({
 		var logoImg = me.loader.getImage('title');
 		this.logo = new me.Sprite(0, - logoImg, {image: logoImg});
 		me.game.world.addChild(this.logo, 10);
-         // TODO
     },
 
     /**
@@ -41,7 +38,5 @@ game.TitleScreen = me.ScreenObject.extend({
     onDestroyEvent: function() {
 		me.event.unsubscribe(this.handler);
 		me.input.unbindKey(me.input.KEY.ENTER);
-		me.input.unbindKey(me.input.KEY.SPACE);
-        ; // TODO
     }
 });

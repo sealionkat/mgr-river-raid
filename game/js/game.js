@@ -42,6 +42,10 @@ var game = {
         me.state.set(me.state.MENU, new game.TitleScreen());
         me.state.set(me.state.PLAY, new game.PlayScreen());
 
+        me.input.bindKey(me.input.KEY.LEFT, 'left');
+        me.input.bindKey(me.input.KEY.RIGHT, 'right');
+        me.input.bindKey(me.input.KEY.SPACE, 'fire', true);
+
         // add our player entity in the entity pool
         me.pool.register('mainPlayer', game.PlayerEntity);
 
