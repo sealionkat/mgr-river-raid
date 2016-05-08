@@ -1,29 +1,24 @@
 game.PlayScreen = me.ScreenObject.extend({
-	init: function() {
-		this._super(me.ScreenObject, 'init');
-	},
     /**
      *  action to perform on state change
      */
     onResetEvent: function() {
-        // reset the score
+		me.input.bindKey(me.input.KEY.LEFT, 'left');
+		me.input.bindKey(me.input.KEY.RIGHT, 'right');
+
         game.data.score = 0;
+        game.data.fuel = 100;
 
-		me.game.world.addChild(
-			new me.Sprite(
-				0,0, {
-					image: me.loader.getImage('bgb-480x800')
-				}
-			),
-			1
-		);
+		var background  = new me.Sprite(0, 0, {
+			image: me.loader.getImage('bgb-480x800'),
+			anchorPoint: {x: 0, y: 0}
+		});
+		me.game.world.addChild(background);
 
-        // add our HUD to the game world
+        // Add our HUD to the game world, add it last so that this is on top of the rest.
+        // Can also be forced by specifying a "Infinity" z value to the addChild function.
         this.HUD = new game.HUD.Container();
         me.game.world.addChild(this.HUD);
-
-		this.bird = me.pool.pull('mainPlayer', 60, me.game.viewport.height / 2 - 100);
-		me.game.world.addChild(this.bird, 10);
     },
 
     /**
@@ -32,8 +27,5 @@ game.PlayScreen = me.ScreenObject.extend({
     onDestroyEvent: function() {
         // remove the HUD from the game world
         me.game.world.removeChild(this.HUD);
-        me.game.world.removeChild(this.bird);
-
-
     }
 });

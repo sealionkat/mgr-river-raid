@@ -5,11 +5,11 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
-          'lib/melonJS-<%= pkg.version %>.js',
+          'lib/melonJS.js',
           'lib/plugins/*.js',
           'js/game.js',
           'build/js/resources.js',
-          'js/**/*.js'
+          'js/**/*.js',
         ],
         dest: 'build/js/app.js'
       }
@@ -30,13 +30,17 @@ module.exports = function(grunt) {
           src: 'data/**/*',
           dest: 'build/',
           expand: true
+        },{
+          src: 'icons/*',
+          dest: 'build/',
+          expand: true
         }]
       }
     },
 
     clean: {
       app: ['build/js/app.js'],
-      dist: ['build/','bin/']
+      dist: ['build/','bin/'],
     },
 
     processhtml: {
@@ -44,7 +48,7 @@ module.exports = function(grunt) {
         options: {
           process: true,
           data: {
-            title: '<%= pkg.name %>'
+            title: '<%= pkg.name %>',
           }
         },
         files: {
@@ -62,8 +66,8 @@ module.exports = function(grunt) {
             {
               match : /this\._super\(\s*([\w\.]+)\s*,\s*["'](\w+)["']\s*(,\s*)?/g,
               replacement : '$1.prototype.$2.apply(this$3'
-            }
-          ]
+            },
+          ],
         },
         files : [
           {
@@ -71,7 +75,7 @@ module.exports = function(grunt) {
             dest : 'build/js/app.js'
           }
         ]
-      }
+      },
     },
 
     uglify: {
@@ -97,13 +101,30 @@ module.exports = function(grunt) {
       }
     },
 
+    'download-electron': {
+      version: '0.35.4',
+      outputDir: 'bin',
+      rebuild: false,
+    },
 
+    asar: {
+      dist: {
+        cwd: 'build',
+        src: ['**/*', '!js/app.js'],
+        expand: true,
+        dest: 'bin/' + (
+          process.platform === 'darwin'
+            ? 'Electron.app/Contents/Resources/'
+            : 'resources/'
+        ) + 'app.asar'
+      },
+    },
 
     resources: {
       dist: {
         options: {
           dest: 'build/js/resources.js',
-          varname: 'game.resources'
+          varname: 'game.resources',
         },
         files: [{
           src: ['data/bgm/**/*', 'data/sfx/**/*'],
@@ -129,10 +150,10 @@ module.exports = function(grunt) {
         files: ['data/**/*'],
         tasks: ['resources'],
         options: {
-          spawn: false
-        }
-      }
-    }
+          spawn: false,
+        },
+      },
+    },
 
   });
 
@@ -144,6 +165,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-processhtml');
   grunt.loadNpmTasks("grunt-replace");
   grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-download-electron');
+  grunt.loadNpmTasks('grunt-asar');
 
   // Custom Tasks
   grunt.loadTasks('tasks');
@@ -155,7 +178,8 @@ module.exports = function(grunt) {
     'uglify',
     'copy',
     'processhtml',
-    'clean:app'
+    'clean:app',
   ]);
+  grunt.registerTask('dist', ['default', 'download-electron', 'asar']);
   grunt.registerTask('serve', ['resources', 'connect', 'watch']);
-};
+}

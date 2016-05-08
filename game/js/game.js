@@ -1,55 +1,43 @@
 
 /* Game namespace */
 var game = {
-
-    // an object where to store game information
     data : {
-        // score
-        score : 0
+        score : 0,
+        fuel: 100
     },
-
-
-    // Run on page load.
     'onload' : function () {
-        // Initialize the video.
         if (!me.video.init(480, 800, {wrapper : 'screen', scale : 'auto'})) {
             alert('Your browser does not support HTML5 canvas.');
             return;
         }
 
-        // add '#debug' to the URL to enable the debug Panel
         if (me.game.HASH.debug === true) {
             window.onReady(function () {
                 me.plugin.register.defer(this, me.debug.Panel, 'debug', me.input.KEY.V);
             });
         }
 
-        // Initialize the audio.
-        me.audio.init('mp3,ogg');
-
-        // Set a callback to run when loading is complete.
         me.loader.onload = this.loaded.bind(this);
-
-        // Load the resources.
         me.loader.preload(game.resources);
-
-        // Initialize melonJS and display a loading screen.
         me.state.change(me.state.LOADING);
     },
-
-    // Run on game resources loaded.
     'loaded' : function () {
-        me.state.set(me.state.MENU, new game.TitleScreen());
-        me.state.set(me.state.PLAY, new game.PlayScreen());
+        //me.state.set(me.state.MENU, new game.TitleScreen());
+        this.playScreen = new game.PlayScreen();
+        me.state.set(me.state.PLAY, this.playScreen);
 
         me.input.bindKey(me.input.KEY.LEFT, 'left');
         me.input.bindKey(me.input.KEY.RIGHT, 'right');
-        me.input.bindKey(me.input.KEY.SPACE, 'fire', true);
 
-        // add our player entity in the entity pool
-        me.pool.register('mainPlayer', game.PlayerEntity);
+		me.pool.register('player', game.PlayerEntity);
+		me.pool.register('enemyV', game.EnemyVEntity, true);
+		me.pool.register('enemyH', game.EnemyHEntity, true);
+		me.pool.register('rockS', game.RockSEntity, true);
+		me.pool.register('rockB', game.RockBEntity, true);
+		me.pool.register('background', game.Ground);
+		me.pool.register('bullet', game.BulletEntity, true);
+		me.pool.register('fuel', game.FuelEntity, true);
 
-        // Start the game.
-        me.state.change(me.state.MENU);
+        me.state.change(me.state.PLAY);
     }
 };
