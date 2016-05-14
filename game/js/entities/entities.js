@@ -23,8 +23,10 @@ game.PlayerEntity = me.Entity.extend({
 			if((this.pos.x + posDiff) <= (game.data.width - game.data.groundWidth - 32)) {
 				this.pos.x += posDiff;
 			}
-		} else {
+		}
 
+		if(this.collided) { //byla kolizja
+			return false;
 		}
 
 		me.collision.check(this);
@@ -33,6 +35,10 @@ game.PlayerEntity = me.Entity.extend({
 	},
 	onCollision: function(response) {
 		var obj = response.b;
+
+		if(obj.type == 'enemy') {
+			this.collided = true;
+		}
 
 
 	}
@@ -48,8 +54,31 @@ game.Ground = me.Entity.extend({
 });
 
 game.EnemyVEntity = me.Entity.extend({
-	init: function() {},
-	update: function() {}
+	init: function(x, y) {
+		var settings = {};
+		settings.image = this.image = me.loader.getImage('enemy1-32x32');
+		settings.width = 32;
+		settings.height = 32;
+		settings.framewidth = 32;
+		settings.frameheight = 32;
+
+		this._super(me.Entity, 'init', [x, y, settings]);
+		this.alwaysUpdate = true;
+
+		this.body.vel.set(0, 1);
+		this.type = 'enemy';
+
+
+	},
+	update: function(dt) {
+		this.pos.add(this.body.vel);
+		if(this.pos.y > game.data.height) {
+			me.game.world.removeChild(this);
+		}
+		me.Rect.prototype.updateBounds.apply(this);
+		this._super(me.Entity, 'update', [dt]);
+		return true;
+	}
 });
 
 game.EnemyHEntity = me.Entity.extend({

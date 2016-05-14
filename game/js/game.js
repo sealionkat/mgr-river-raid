@@ -41,6 +41,7 @@ var game = {
 		me.pool.register('bullet', game.BulletEntity, true);
 		me.pool.register('fuel', game.FuelEntity, true);
 
+        me.game.viewport.setBounds(0, 0, 480, 800);
         me.state.change(me.state.PLAY);
     }
 };
