@@ -3,7 +3,10 @@
 var game = {
     data : {
         score : 0,
-        fuel: 100
+        fuel: 100,
+        height: 800,
+		width: 480,
+		groundWidth: 30
     },
     'onload' : function () {
         if (!me.video.init(480, 800, {wrapper : 'screen', scale : 'auto'})) {

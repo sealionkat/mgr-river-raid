@@ -1,12 +1,43 @@
 game.PlayerEntity = me.Entity.extend({
-	init: function() {},
-	update: function() {},
-	onCollision: function() {}
+	init: function(x, y) {
+		var settings = {};
+		settings.image = me.loader.getImage('player-32x32');
+		settings.width = 32;
+		settings.height = 32;
+		settings.framewidth = 32;
+		settings.frameheight = 32;
+
+		this._super(me.Entity, 'init', [x, y, settings]);
+		this.alwaysUpdate = true;
+		this.collided = false;
+	},
+	update: function(dt) {
+		if(me.input.isKeyPressed('left')) {
+			this.pos.x -= 1;
+		} else if(me.input.isKeyPressed('right')) {
+			this.pos.x += 1;
+		} else {
+
+		}
+
+		me.collision.check(this);
+		this._super(me.Entity, 'update', [dt]);
+		return true;
+	},
+	onCollision: function(response) {
+		var obj = response.b;
+
+
+	}
 });
 
 game.Ground = me.Entity.extend({
-	init: function() {},
-	update: function() {}
+	init: function(x, y) {
+
+	},
+	update: function(dt) {
+
+	}
 });
 
 game.EnemyVEntity = me.Entity.extend({

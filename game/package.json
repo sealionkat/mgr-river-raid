@@ -2,6 +2,8 @@
   "name": "river-raid-c",
   "version": "0.0.1",
   "main": "main.js",
+  "private": true,
+  "author": "sealionkat",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-asar": "bwin/grunt-asar#update-asar",

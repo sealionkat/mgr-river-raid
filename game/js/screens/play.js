@@ -13,7 +13,10 @@ game.PlayScreen = me.ScreenObject.extend({
 			image: me.loader.getImage('bgb-480x800'),
 			anchorPoint: {x: 0, y: 0}
 		});
-		me.game.world.addChild(background);
+		me.game.world.addChild(background, 1);
+
+        this.plane = me.pool.pull('player', game.data.width / 2, game.data.height - 100);
+		me.game.world.addChild(this.plane, 11);
 
         // Add our HUD to the game world, add it last so that this is on top of the rest.
         // Can also be forced by specifying a "Infinity" z value to the addChild function.
