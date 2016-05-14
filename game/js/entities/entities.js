@@ -8,14 +8,21 @@ game.PlayerEntity = me.Entity.extend({
 		settings.frameheight = 32;
 
 		this._super(me.Entity, 'init', [x, y, settings]);
+		this.speed = 1.0;
 		this.alwaysUpdate = true;
 		this.collided = false;
 	},
 	update: function(dt) {
+		var posDiff = me.timer.tick * this.speed;
+
 		if(me.input.isKeyPressed('left')) {
-			this.pos.x -= 1;
+			if((this.pos.x - posDiff) >= game.data.groundWidth) {
+				this.pos.x -= posDiff;
+			}
 		} else if(me.input.isKeyPressed('right')) {
-			this.pos.x += 1;
+			if((this.pos.x + posDiff) <= (game.data.width - game.data.groundWidth - 32)) {
+				this.pos.x += posDiff;
+			}
 		} else {
 
 		}
