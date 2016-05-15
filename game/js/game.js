@@ -40,6 +40,7 @@ var game = {
 		me.pool.register('rockB', game.RockBEntity, true);
 		me.pool.register('background', game.Ground);
 		me.pool.register('bulletP', game.BulletPEntity, true);
+		me.pool.register('bulletE', game.BulletEEntity, true);
 		me.pool.register('fuel', game.FuelEntity, true);
 
         me.game.viewport.setBounds(0, 0, 480, 800);

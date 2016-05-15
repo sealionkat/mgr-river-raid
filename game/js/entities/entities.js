@@ -25,12 +25,14 @@ game.PlayerEntity = me.Entity.extend({
 		if(me.input.isKeyPressed('left')) {
 			if((this.pos.x - posDiff) >= game.data.groundWidth) {
 				this.pos.x -= posDiff;
+
 			}
 		} else if(me.input.isKeyPressed('right')) {
 			if((this.pos.x + posDiff) <= (game.data.width - game.data.groundWidth - 32)) {
 				this.pos.x += posDiff;
 			}
 		}
+		game.data.playerPos.x = this.pos.x;
 
 		if(this.generateB++ % this.frequencyBullet == 0) {
 			var bullet = new me.pool.pull('bulletP', this.pos.x + 8, this.pos.y - 16);
@@ -50,7 +52,7 @@ game.PlayerEntity = me.Entity.extend({
 			me.game.world.removeChild(obj);
 		}
 
-		if(obj.type == 'enemy' || obj.type == 'rock') {
+		if(obj.type == 'enemy' || obj.type == 'rock' || obj.type == 'bulletE') {
 			this.collided = true;
 			console.warn('GAME OVER!');
 			me.state.change(me.state.GAMEOVER);
@@ -79,14 +81,31 @@ game.EnemyVEntity = me.Entity.extend({
 		this._super(me.Entity, 'init', [x, y, settings]);
 		this.alwaysUpdate = true;
 
-		this.body.vel.set(0, 1);
+		this.body.vel.set(0, 2);
 		this.type = 'enemy';
+
+		this.generate = 0;
+		this.frequency = 100;
 	},
 	update: function(dt) {
 		this.pos.add(this.body.vel);
 		if(this.pos.y > game.data.height) {
 			me.game.world.removeChild(this);
 		}
+
+		if(this.generate++ % this.frequency == 0) {
+			var bullet = new me.pool.pull('bulletE', this.pos.x + 8, this.pos.y + 32);
+			var diffPos = this.pos.x - game.data.playerPos.x; //todo
+			if(diffPos > 0) {
+				bullet.body.vel.set(-1, 3);
+			} else if(diffPos < 0) {
+				bullet.body.vel.set(1, 3);
+			} else {
+				bullet.body.vel.set(0, 3);
+			}
+			me.game.world.addChild(bullet, 11);
+		}
+
 		me.Rect.prototype.updateBounds.apply(this);
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
@@ -100,7 +119,7 @@ game.EnemyVEntity = me.Entity.extend({
 	onCollision: function(response) {
 		var secondObj = response.b;
 
-		if(secondObj.type == 'enemy') {
+		if(secondObj.type == 'enemy' || secondObj.type == 'bulletE') {
 			return false;
 		}
 		if(secondObj.type == 'bulletP') {
@@ -128,6 +147,9 @@ game.EnemyHEntity = me.Entity.extend({
 
 		this.body.vel.set(-1, 1);
 		this.type = 'enemy';
+
+		this.generate = 0;
+		this.frequency = 100;
 	},
 	update: function(dt) {
 		this.pos.add(this.body.vel);
@@ -137,6 +159,20 @@ game.EnemyHEntity = me.Entity.extend({
 		if(this.pos.y > game.data.height) {
 			me.game.world.removeChild(this);
 		}
+
+		if(this.generate++ % this.frequency == 0) {
+			var bullet = new me.pool.pull('bulletE', this.pos.x + 8, this.pos.y + 32);
+			var diffPos = this.pos.x - game.data.playerPos.x; //todo
+			if(diffPos > 0) {
+				bullet.body.vel.set(-1, 3);
+			} else if(diffPos < 0) {
+				bullet.body.vel.set(1, 3);
+			} else {
+				bullet.body.vel.set(0, 3);
+			}
+			me.game.world.addChild(bullet, 11);
+		}
+
 		me.Rect.prototype.updateBounds.apply(this);
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
@@ -150,7 +186,7 @@ game.EnemyHEntity = me.Entity.extend({
 	onCollision: function(response) {
 		var secondObj = response.b;
 
-		if(secondObj.type == 'enemy') {
+		if(secondObj.type == 'enemy' || secondObj.type == 'bulletE') {
 			return false;
 		}
 		if(secondObj.type == 'bulletP') {
@@ -193,6 +229,32 @@ game.BulletPEntity = me.Entity.extend({
 	update: function(dt) {
 		this.pos.add(this.body.vel);
 		if(this.pos.y < 0) {
+			me.game.world.removeChild(this);
+		}
+		me.Rect.prototype.updateBounds.apply(this);
+		this._super(me.Entity, 'update', [dt]);
+		return true;
+	}
+});
+
+game.BulletEEntity = me.Entity.extend({
+	init: function(x, y) {
+		var settings = {};
+		settings.image = me.loader.getImage('bulletE-16x16');
+		settings.width = 16;
+		settings.height = 16;
+		settings.framewidth = 16;
+		settings.frameheight = 16;
+
+		this._super(me.Entity, 'init', [x, y, settings]);
+		this.alwaysUpdate = true;
+		this.collided = false;
+
+		this.type = 'bulletE';
+	},
+	update: function(dt) {
+		this.pos.add(this.body.vel);
+		if(this.pos.y > game.data.height) {
 			me.game.world.removeChild(this);
 		}
 		me.Rect.prototype.updateBounds.apply(this);
