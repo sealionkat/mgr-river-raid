@@ -23,6 +23,9 @@ game.PlayScreen = me.ScreenObject.extend({
 		this.enemyGenerator = new game.EnemiesGenerator();
 		me.game.world.addChild(this.enemyGenerator, 0);
 
+		this.fuelGenerator = new game.FuelGenerator();
+		me.game.world.addChild(this.fuelGenerator, 0);
+
     },
     onDestroyEvent: function() {
         me.game.world.removeChild(this.HUD);

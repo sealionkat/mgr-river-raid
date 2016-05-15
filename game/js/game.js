@@ -4,6 +4,7 @@ var game = {
     data : {
         score : 0,
         fuel: 100,
+		maxFuel: 100,
         height: 800,
 		width: 480,
 		groundWidth: 30

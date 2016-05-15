@@ -44,9 +44,16 @@ game.PlayerEntity = me.Entity.extend({
 	onCollision: function(response) {
 		var obj = response.b;
 
+		if(obj.type == 'fuel') {
+			game.data.fuel = game.data.maxFuel;
+			console.log('tank');
+			me.game.world.removeChild(obj);
+		}
+
 		if(obj.type == 'enemy' || obj.type == 'rock') {
 			this.collided = true;
 			console.warn('GAME OVER!');
+			me.state.change(me.state.GAMEOVER);
 		}
 	}
 });
@@ -195,8 +202,29 @@ game.BulletPEntity = me.Entity.extend({
 });
 
 game.FuelEntity = me.Entity.extend({
-	init: function () {},
-	update: function() {}
+	init: function (x, y) {
+		var settings = {};
+		settings.image = this.image = me.loader.getImage('fuel-32x32');
+		settings.width = 32;
+		settings.height = 32;
+		settings.framewidth = 32;
+		settings.frameheight = 32;
+
+		this._super(me.Entity, 'init', [x, y, settings]);
+		this.alwaysUpdate = true;
+
+		this.body.vel.set(0, 1);
+		this.type = 'fuel';
+	},
+	update: function(dt) {
+		this.pos.add(this.body.vel);
+		if(this.pos.y > game.data.height) {
+			me.game.world.removeChild(this);
+		}
+		me.Rect.prototype.updateBounds.apply(this);
+		this._super(me.Entity, 'update', [dt]);
+		return true;
+	}
 });
 
 game.EnemiesGenerator = me.Renderable.extend({
@@ -229,6 +257,21 @@ game.RocksGenerator = me.Renderable.extend({
 });
 
 game.FuelGenerator = me.Renderable.extend({
-	init: function() {},
-	update: function() {}
+	init: function() {
+		this._super(me.Renderable, 'init', [0, 0, me.game.viewport.width, me.game.viewport.height]);
+		this.alwaysUpdate = true;
+		this.generate = 1;
+		this.frequency = 800;
+	},
+	update: function(dt) {
+		if(this.generate++ % this.frequency == 0) {
+			var posX = Number.prototype.random(game.data.groundWidth, game.data.width - game.data.groundWidth - 32);
+			var fuel = new me.pool.pull('fuel', posX, 0);
+			console.log('fuel added');
+			me.game.world.addChild(fuel, 11);
+		}
+
+		this._super(me.Entity, 'update', [dt]);
+		return true;
+	}
 });
