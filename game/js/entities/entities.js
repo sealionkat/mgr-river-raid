@@ -8,7 +8,7 @@ game.PlayerEntity = me.Entity.extend({
 		settings.frameheight = 32;
 
 		this._super(me.Entity, 'init', [x, y, settings]);
-		this.speed = 1.0;
+		this.speed = 2.0;
 		this.alwaysUpdate = true;
 		this.collided = false;
 
@@ -164,11 +164,11 @@ game.EnemyHEntity = me.Entity.extend({
 			var bullet = new me.pool.pull('bulletE', this.pos.x + 8, this.pos.y + 32);
 			var diffPos = this.pos.x - game.data.playerPos.x; //todo
 			if(diffPos > 0) {
-				bullet.body.vel.set(-1, 3);
+				bullet.body.vel.set(-1, 2);
 			} else if(diffPos < 0) {
-				bullet.body.vel.set(1, 3);
+				bullet.body.vel.set(1, 2);
 			} else {
-				bullet.body.vel.set(0, 3);
+				bullet.body.vel.set(0, 2);
 			}
 			me.game.world.addChild(bullet, 11);
 		}
