@@ -33,7 +33,7 @@ var game = {
         me.input.bindKey(me.input.KEY.RIGHT, 'right');
 
 		me.pool.register('player', game.PlayerEntity);
-		me.pool.register('enemyV', game.EnemyVEntity, true);
+		me.pool.register('enemyV', game.EnemyVEntity);
 		me.pool.register('enemyH', game.EnemyHEntity, true);
 		me.pool.register('rockS', game.RockSEntity, true);
 		me.pool.register('rockB', game.RockBEntity, true);

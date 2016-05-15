@@ -1,7 +1,4 @@
 game.PlayScreen = me.ScreenObject.extend({
-    /**
-     *  action to perform on state change
-     */
     onResetEvent: function() {
 		me.input.bindKey(me.input.KEY.LEFT, 'left');
 		me.input.bindKey(me.input.KEY.RIGHT, 'right');
@@ -18,8 +15,8 @@ game.PlayScreen = me.ScreenObject.extend({
         this.plane = me.pool.pull('player', game.data.width / 2, game.data.height - 100);
 		me.game.world.addChild(this.plane, 11);
 
-        this.enemyTest = me.pool.pull('enemyV', game.data.width / 2, 40);
-		me.game.world.addChild(this.enemyTest, 11);
+        //this.enemyTest = me.pool.pull('enemyV', game.data.width / 2, 40);
+		//me.game.world.addChild(this.enemyTest, 11);
 
 		this.enemy2Test = me.pool.pull('enemyH', game.data.width - game.data.groundWidth - 32, 100);
 		me.game.world.addChild(this.enemy2Test, 11);
@@ -27,13 +24,12 @@ game.PlayScreen = me.ScreenObject.extend({
         // Can also be forced by specifying a "Infinity" z value to the addChild function.
         this.HUD = new game.HUD.Container();
         me.game.world.addChild(this.HUD);
-    },
 
-    /**
-     *  action to perform when leaving this screen (state change)
-     */
+		this.enemyGenerator = new game.EnemiesGenerator();
+		me.game.world.addChild(this.enemyGenerator, 0);
+
+    },
     onDestroyEvent: function() {
-        // remove the HUD from the game world
         me.game.world.removeChild(this.HUD);
     }
 });

@@ -15,6 +15,10 @@ game.PlayerEntity = me.Entity.extend({
 	update: function(dt) {
 		var posDiff = me.timer.tick * this.speed;
 
+		if(this.collided) { //byla kolizja
+			return false;
+		}
+
 		if(me.input.isKeyPressed('left')) {
 			if((this.pos.x - posDiff) >= game.data.groundWidth) {
 				this.pos.x -= posDiff;
@@ -25,9 +29,7 @@ game.PlayerEntity = me.Entity.extend({
 			}
 		}
 
-		if(this.collided) { //byla kolizja
-			return false;
-		}
+
 
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
@@ -67,8 +69,6 @@ game.EnemyVEntity = me.Entity.extend({
 
 		this.body.vel.set(0, 1);
 		this.type = 'enemy';
-
-
 	},
 	update: function(dt) {
 		this.pos.add(this.body.vel);
@@ -98,7 +98,7 @@ game.EnemyHEntity = me.Entity.extend({
 	},
 	update: function(dt) {
 		this.pos.add(this.body.vel);
-		if(this.pos.x < game.data.groundWidth) {
+		if(this.pos.x <= game.data.groundWidth) {
 			this.body.vel.set(0, 1);
 		}
 		if(this.pos.y > game.data.height) {
@@ -132,11 +132,22 @@ game.FuelEntity = me.Entity.extend({
 	update: function() {}
 });
 
-game.EnemiesGenerator = me.Entity.extend({
+game.EnemiesGenerator = me.Renderable.extend({
 	init: function() {
-
+		this._super(me.Renderable, 'init', [0, 0, me.game.viewport.width, me.game.viewport.height]);
+		this.alwaysUpdate = true;
+		this.generate = 0;
+		this.frequency = 250;
 	},
-	update: function() {}
+	update: function(dt) {
+		if(this.generate++ % this.frequency == 0) {
+			var posX = Number.prototype.random(game.data.groundWidth, game.data.width - game.data.groundWidth - 32);
+			var enemy = new me.pool.pull('enemyV', posX, 0);
+			me.game.world.addChild(enemy, 11);
+		}
+		this._super(me.Entity, 'update', [dt]);
+		return true;
+	}
 });
 
 game.RocksGenerator = me.Entity.extend({
