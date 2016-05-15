@@ -11,6 +11,9 @@ game.PlayerEntity = me.Entity.extend({
 		this.speed = 1.0;
 		this.alwaysUpdate = true;
 		this.collided = false;
+
+		this.frequencyBullet = 50;
+		this.generateB = 0;
 	},
 	update: function(dt) {
 		var posDiff = me.timer.tick * this.speed;
@@ -29,6 +32,11 @@ game.PlayerEntity = me.Entity.extend({
 			}
 		}
 
+		if(this.generateB++ % this.frequencyBullet == 0) {
+			var bullet = new me.pool.pull('bulletP', this.pos.x + 8, this.pos.y - 16);
+			me.game.world.addChild(bullet, 11);
+		}
+
 
 
 		me.collision.check(this);
@@ -38,12 +46,10 @@ game.PlayerEntity = me.Entity.extend({
 	onCollision: function(response) {
 		var obj = response.b;
 
-		if(obj.type == 'enemy') {
+		if(obj.type == 'enemy' || obj.type == 'rock') {
 			this.collided = true;
 			console.warn('GAME OVER!');
 		}
-
-
 	}
 });
 
@@ -121,11 +127,31 @@ game.RockBEntity = me.Entity.extend({
 	update: function() {}
 });
 
-game.BulletEntity = me.Entity.extend({
-	init: function() {
+game.BulletPEntity = me.Entity.extend({
+	init: function(x, y) {
+		var settings = {};
+		settings.image = me.loader.getImage('bulletP-16x16');
+		settings.width = 16;
+		settings.height = 16;
+		settings.framewidth = 16;
+		settings.frameheight = 16;
 
+		this._super(me.Entity, 'init', [x, y, settings]);
+		this.body.vel.set(0, -2);
+		this.alwaysUpdate = true;
+		this.collided = false;
+
+		this.type = 'bulletP';
 	},
-	update: function() {}
+	update: function(dt) {
+		this.pos.add(this.body.vel);
+		if(this.pos.y < 0) {
+			me.game.world.removeChild(this);
+		}
+		me.Rect.prototype.updateBounds.apply(this);
+		this._super(me.Entity, 'update', [dt]);
+		return true;
+	}
 });
 
 game.FuelEntity = me.Entity.extend({
