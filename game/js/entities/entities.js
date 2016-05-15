@@ -37,8 +37,6 @@ game.PlayerEntity = me.Entity.extend({
 			me.game.world.addChild(bullet, 11);
 		}
 
-
-
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
 		return true;
@@ -83,8 +81,30 @@ game.EnemyVEntity = me.Entity.extend({
 			me.game.world.removeChild(this);
 		}
 		me.Rect.prototype.updateBounds.apply(this);
+		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
 		return true;
+	},
+	shouldCollide: function(a, b) {
+		console.log('shoul');
+		if(b.type == 'enemy' && a.type == 'enemy') {
+			return false;
+		}
+	},
+	onCollision: function(response) {
+		var secondObj = response.b;
+
+		if(secondObj.type == 'enemy') {
+			return false;
+		}
+		if(secondObj.type == 'bulletP') {
+			this.collided = true;
+			console.log('enemy shot');
+			game.data.score += 50;
+			me.game.world.removeChild(secondObj);
+			me.game.world.removeChild(this);
+		}
+
 	}
 });
 
@@ -176,7 +196,7 @@ game.EnemiesGenerator = me.Renderable.extend({
 		}
 		if(this.generateH++ % this.frequencyH == 0) {
 			var enemy = new me.pool.pull('enemyH', game.data.width - game.data.groundWidth - 32, 0);
-			me.game.world.addChild(enemy, 11);
+			me.game.world.addChild(enemy, 10);
 		}
 		this._super(me.Entity, 'update', [dt]);
 		return true;
