@@ -40,6 +40,7 @@ game.PlayerEntity = me.Entity.extend({
 
 		if(obj.type == 'enemy') {
 			this.collided = true;
+			console.warn('GAME OVER!');
 		}
 
 
@@ -136,13 +137,19 @@ game.EnemiesGenerator = me.Renderable.extend({
 	init: function() {
 		this._super(me.Renderable, 'init', [0, 0, me.game.viewport.width, me.game.viewport.height]);
 		this.alwaysUpdate = true;
-		this.generate = 0;
-		this.frequency = 250;
+		this.generateV = 0;
+		this.frequencyV = 300;
+		this.generateH = 0;
+		this.frequencyH = 500;
 	},
 	update: function(dt) {
-		if(this.generate++ % this.frequency == 0) {
+		if(this.generateV++ % this.frequencyV == 0) {
 			var posX = Number.prototype.random(game.data.groundWidth, game.data.width - game.data.groundWidth - 32);
 			var enemy = new me.pool.pull('enemyV', posX, 0);
+			me.game.world.addChild(enemy, 11);
+		}
+		if(this.generateH++ % this.frequencyH == 0) {
+			var enemy = new me.pool.pull('enemyH', game.data.width - game.data.groundWidth - 32, 0);
 			me.game.world.addChild(enemy, 11);
 		}
 		this._super(me.Entity, 'update', [dt]);
@@ -150,50 +157,12 @@ game.EnemiesGenerator = me.Renderable.extend({
 	}
 });
 
-game.RocksGenerator = me.Entity.extend({
+game.RocksGenerator = me.Renderable.extend({
 	init: function() {},
 	update: function() {}
 });
 
-game.FuelGenerator = me.Entity.extend({
+game.FuelGenerator = me.Renderable.extend({
 	init: function() {},
 	update: function() {}
 });
-
-///**
-// * Player Entity
-// */
-//game.PlayerEntity = me.Entity.extend({
-//
-//    /**
-//     * constructor
-//     */
-//    init:function (x, y, settings) {
-//        // call the constructor
-//        this._super(me.Entity, 'init', [x, y , settings]);
-//    },
-//
-//    /**
-//     * update the entity
-//     */
-//    update : function (dt) {
-//
-//        // apply physics to the body (this moves the entity)
-//        this.body.update(dt);
-//
-//        // handle collisions against other shapes
-//        me.collision.check(this);
-//
-//        // return true if we moved or if the renderable was updated
-//        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
-//    },
-//
-//   /**
-//     * colision handler
-//     * (called when colliding with other objects)
-//     */
-//    onCollision : function (response, other) {
-//        // Make all other objects solid
-//        return true;
-//    }
-//});

@@ -15,11 +15,6 @@ game.PlayScreen = me.ScreenObject.extend({
         this.plane = me.pool.pull('player', game.data.width / 2, game.data.height - 100);
 		me.game.world.addChild(this.plane, 11);
 
-        //this.enemyTest = me.pool.pull('enemyV', game.data.width / 2, 40);
-		//me.game.world.addChild(this.enemyTest, 11);
-
-		this.enemy2Test = me.pool.pull('enemyH', game.data.width - game.data.groundWidth - 32, 100);
-		me.game.world.addChild(this.enemy2Test, 11);
         // Add our HUD to the game world, add it last so that this is on top of the rest.
         // Can also be forced by specifying a "Infinity" z value to the addChild function.
         this.HUD = new game.HUD.Container();
@@ -31,5 +26,6 @@ game.PlayScreen = me.ScreenObject.extend({
     },
     onDestroyEvent: function() {
         me.game.world.removeChild(this.HUD);
+		//todo
     }
 });
