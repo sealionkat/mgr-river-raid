@@ -86,7 +86,6 @@ game.EnemyVEntity = me.Entity.extend({
 		return true;
 	},
 	shouldCollide: function(a, b) {
-		console.log('shoul');
 		if(b.type == 'enemy' && a.type == 'enemy') {
 			return false;
 		}
@@ -132,8 +131,29 @@ game.EnemyHEntity = me.Entity.extend({
 			me.game.world.removeChild(this);
 		}
 		me.Rect.prototype.updateBounds.apply(this);
+		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
 		return true;
+	},
+	shouldCollide: function(a, b) {
+		if(b.type == 'enemy' && a.type == 'enemy') {
+			return false;
+		}
+	},
+	onCollision: function(response) {
+		var secondObj = response.b;
+
+		if(secondObj.type == 'enemy') {
+			return false;
+		}
+		if(secondObj.type == 'bulletP') {
+			this.collided = true;
+			console.log('enemy shot');
+			game.data.score += 50;
+			me.game.world.removeChild(secondObj);
+			me.game.world.removeChild(this);
+		}
+
 	}
 });
 
