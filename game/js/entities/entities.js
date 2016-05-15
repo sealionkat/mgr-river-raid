@@ -12,7 +12,7 @@ game.PlayerEntity = me.Entity.extend({
 		this.alwaysUpdate = true;
 		this.collided = false;
 
-		this.frequencyBullet = 50;
+		this.frequencyBullet = 75;
 		this.generateB = 0;
 	},
 	update: function(dt) {
