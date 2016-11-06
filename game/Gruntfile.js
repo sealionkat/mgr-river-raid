@@ -9,7 +9,7 @@ module.exports = function(grunt) {
           'lib/plugins/*.js',
           'js/game.js',
           'build/js/resources.js',
-          'js/**/*.js',
+          'js/**/*.js'
         ],
         dest: 'build/js/app.js'
       }
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 
     clean: {
       app: ['build/js/app.js'],
-      dist: ['build/','bin/'],
+      dist: ['build/','bin/']
     },
 
     processhtml: {
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
         options: {
           process: true,
           data: {
-            title: '<%= pkg.name %>',
+            title: '<%= pkg.name %>'
           }
         },
         files: {
@@ -66,8 +66,8 @@ module.exports = function(grunt) {
             {
               match : /this\._super\(\s*([\w\.]+)\s*,\s*["'](\w+)["']\s*(,\s*)?/g,
               replacement : '$1.prototype.$2.apply(this$3'
-            },
-          ],
+            }
+          ]
         },
         files : [
           {
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
             dest : 'build/js/app.js'
           }
         ]
-      },
+      }
     },
 
     uglify: {
@@ -104,7 +104,7 @@ module.exports = function(grunt) {
     'download-electron': {
       version: '0.35.4',
       outputDir: 'bin',
-      rebuild: false,
+      rebuild: false
     },
 
     asar: {
@@ -117,14 +117,14 @@ module.exports = function(grunt) {
             ? 'Electron.app/Contents/Resources/'
             : 'resources/'
         ) + 'app.asar'
-      },
+      }
     },
 
     resources: {
       dist: {
         options: {
           dest: 'build/js/resources.js',
-          varname: 'game.resources',
+          varname: 'game.resources'
         },
         files: [{
           src: ['data/bgm/**/*', 'data/sfx/**/*'],
@@ -145,15 +145,22 @@ module.exports = function(grunt) {
       }
     },
 
+	  eslint: {
+		options: {
+			configFile: '.eslintrc'
+		},
+		  validate: ['js/**/*.js', 'main.js']
+	  },
+
     watch: {
       resources: {
         files: ['data/**/*'],
         tasks: ['resources'],
         options: {
-          spawn: false,
-        },
-      },
-    },
+          spawn: false
+        }
+      }
+    }
 
   });
 
@@ -167,19 +174,22 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-download-electron');
   grunt.loadNpmTasks('grunt-asar');
+	grunt.loadNpmTasks('grunt-eslint');
 
   // Custom Tasks
   grunt.loadTasks('tasks');
 
   grunt.registerTask('default', [
+  	'eslint',
     'resources',
     'concat',
     'replace',
     'uglify',
     'copy',
     'processhtml',
-    'clean:app',
+    'clean:app'
   ]);
   grunt.registerTask('dist', ['default', 'download-electron', 'asar']);
   grunt.registerTask('serve', ['resources', 'connect', 'watch']);
-}
+	grunt.registerTask('lint', ['eslint']);
+};
