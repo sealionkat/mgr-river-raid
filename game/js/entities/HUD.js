@@ -64,6 +64,7 @@ game.HUD.ScoreItem = me.Renderable.extend({
     draw : function (context) {
         // draw it baby !
 	    this.font.draw(context, 'Score: ' + game.data.score, this.pos.x, this.pos.y);
+        this.font.draw(context, 'Fuel: ' + game.data.fuel, this.pos.x, this.pos.y + 25);
     }
 
 });
