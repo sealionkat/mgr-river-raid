@@ -1,37 +1,36 @@
-
 /* Game namespace */
 var game = {
-    data : {
-        score : 0,
-        fuel: 100,
+	data: {
+		score: 0,
+		fuel: 100,
 		maxFuel: 100,
-        height: 800,
+		height: 800,
 		width: 480,
 		groundWidth: 30
-    },
-    'onload' : function () {
-        if (!me.video.init(480, 800, {wrapper : 'screen', scale : 'auto'})) {
-            alert('Your browser does not support HTML5 canvas.');
-            return;
-        }
+	},
+	onload: function() {
+		if(!me.video.init(480, 800, {wrapper: 'screen', scale: 'auto'})) {
+			alert('Your browser does not support HTML5 canvas.');
+			return;
+		}
 
-        if (me.game.HASH.debug === true) {
-            window.onReady(function () {
-                me.plugin.register.defer(this, me.debug.Panel, 'debug', me.input.KEY.V);
-            });
-        }
+		if(me.game.HASH.debug === true) {
+			window.onReady(function() {
+				me.plugin.register.defer(this, me.debug.Panel, 'debug', me.input.KEY.V);
+			});
+		}
 
-        me.loader.onload = this.loaded.bind(this);
-        me.loader.preload(game.resources);
-        me.state.change(me.state.LOADING);
-    },
-    'loaded' : function () {
-        //me.state.set(me.state.MENU, new game.TitleScreen());
-        this.playScreen = new game.PlayScreen();
-        me.state.set(me.state.PLAY, this.playScreen);
+		me.loader.onload = this.loaded.bind(this);
+		me.loader.preload(game.resources);
+		me.state.change(me.state.LOADING);
+	},
+	loaded: function() {
+		//me.state.set(me.state.MENU, new game.TitleScreen());
+		this.playScreen = new game.PlayScreen();
+		me.state.set(me.state.PLAY, this.playScreen);
 
-        me.input.bindKey(me.input.KEY.LEFT, 'left');
-        me.input.bindKey(me.input.KEY.RIGHT, 'right');
+		me.input.bindKey(me.input.KEY.LEFT, 'left');
+		me.input.bindKey(me.input.KEY.RIGHT, 'right');
 
 		me.pool.register('player', game.PlayerEntity);
 		me.pool.register('enemyV', game.EnemyVEntity);
@@ -43,7 +42,7 @@ var game = {
 		me.pool.register('bulletE', game.BulletEEntity, true);
 		me.pool.register('fuel', game.FuelEntity, true);
 
-        me.game.viewport.setBounds(0, 0, 480, 800);
-        me.state.change(me.state.PLAY);
-    }
+		me.game.viewport.setBounds(0, 0, 480, 800);
+		me.state.change(me.state.PLAY);
+	}
 };
