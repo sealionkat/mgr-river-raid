@@ -1,28 +1,28 @@
 module.exports = function (grunt) {
     function task() {
-        var path = require("path"),
+        var path = require('path'),
             options = this.options({
-                "varname" : "game.resources"
+                'varname' : 'game.resources'
             });
             res = [],
             audio = {};
 
-        grunt.log.debug("options: " + JSON.stringify(options));
-        grunt.log.debug("files: " + JSON.stringify(this.files));
+        grunt.log.debug('options: ' + JSON.stringify(options));
+        grunt.log.debug('files: ' + JSON.stringify(this.files));
 
         this.files.forEach(function (file) {
             file.src.forEach(function (src) {
                 var name = path.basename(src, path.extname(src));
-                if ((file.type !== "audio") || (!audio.hasOwnProperty(name))) {
-                    if (file.type === "audio") {
+                if ((file.type !== 'audio') || (!audio.hasOwnProperty(name))) {
+                    if (file.type === 'audio') {
                         audio[name] = true;
                     }
                     res.push({
-                        "name"  : name,
-                        "type"  : file.type,
-                        "src"   : (
-                            file.type === "audio" ?
-                            path.dirname(src) + "/" :
+                        'name'  : name,
+                        'type'  : file.type,
+                        'src'   : (
+                            file.type === 'audio' ?
+                            path.dirname(src) + '/' :
                             src
                         )
                     });
@@ -34,10 +34,10 @@ module.exports = function (grunt) {
 
         grunt.file.write(
             options.dest,
-            options.varname + " = " + JSON.stringify(res, null, 4) + ";"
+            options.varname + ' = ' + JSON.stringify(res, null, 4) + ';'
         );
         grunt.log.ok(options.dest)
     }
 
-    grunt.registerMultiTask("resources", "Build melonJS resources.js", task);
+    grunt.registerMultiTask('resources', 'Build melonJS resources.js', task);
 };

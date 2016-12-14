@@ -25,7 +25,6 @@ game.PlayerEntity = me.Entity.extend({
 		if(me.input.isKeyPressed('left')) {
 			if((this.pos.x - posDiff) >= game.data.groundWidth) {
 				this.pos.x -= posDiff;
-
 			}
 		} else if(me.input.isKeyPressed('right')) {
 			if((this.pos.x + posDiff) <= (game.data.width - game.data.groundWidth - 32)) {
@@ -41,6 +40,7 @@ game.PlayerEntity = me.Entity.extend({
 
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
+
 		return true;
 	},
 	onCollision: function(response) {
@@ -109,6 +109,7 @@ game.EnemyVEntity = me.Entity.extend({
 		me.Rect.prototype.updateBounds.apply(this);
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
+
 		return true;
 	},
 	shouldCollide: function(a, b) {
@@ -176,6 +177,7 @@ game.EnemyHEntity = me.Entity.extend({
 		me.Rect.prototype.updateBounds.apply(this);
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
+
 		return true;
 	},
 	shouldCollide: function(a, b) {
@@ -233,6 +235,7 @@ game.BulletPEntity = me.Entity.extend({
 		}
 		me.Rect.prototype.updateBounds.apply(this);
 		this._super(me.Entity, 'update', [dt]);
+
 		return true;
 	}
 });
@@ -259,6 +262,7 @@ game.BulletEEntity = me.Entity.extend({
 		}
 		me.Rect.prototype.updateBounds.apply(this);
 		this._super(me.Entity, 'update', [dt]);
+
 		return true;
 	}
 });
@@ -336,6 +340,7 @@ game.FuelGenerator = me.Renderable.extend({
 		}
 
 		this._super(me.Entity, 'update', [dt]);
+
 		return true;
 	}
 });

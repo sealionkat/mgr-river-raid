@@ -20,17 +20,17 @@ module.exports = function(grunt) {
         files: [{
           src: 'index.css',
           dest: 'build/index.css'
-        },{
+        }, {
           src: 'main.js',
           dest: 'build/main.js'
-        },{
+        }, {
           src: 'package.json',
           dest: 'build/package.json'
-        },{
+        }, {
           src: 'data/**/*',
           dest: 'build/',
           expand: true
-        },{
+        }, {
           src: 'icons/*',
           dest: 'build/',
           expand: true
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 
     clean: {
       app: ['build/js/app.js'],
-      dist: ['build/','bin/']
+      dist: ['build/', 'bin/']
     },
 
     processhtml: {
@@ -71,7 +71,7 @@ module.exports = function(grunt) {
         },
         files : [
           {
-            src : [ 'build/js/app.js' ],
+            src : ['build/js/app.js'],
             dest : 'build/js/app.js'
           }
         ]
@@ -129,16 +129,16 @@ module.exports = function(grunt) {
         files: [{
           src: ['data/bgm/**/*', 'data/sfx/**/*'],
           type: 'audio'
-        },{
+        }, {
           src: ['data/img/**/*.png'],
           type: 'image'
-        },{
+        }, {
           src: ['data/img/**/*.json'],
           type: 'json'
-        },{
+        }, {
           src: ['data/map/**/*.tmx', 'data/map/**/*.json'],
           type: 'tmx'
-        },{
+        }, {
           src: ['data/map/**/*.tsx'],
           type: 'tsx'
         }]
@@ -170,7 +170,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-processhtml');
-  grunt.loadNpmTasks("grunt-replace");
+  grunt.loadNpmTasks('grunt-replace');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-download-electron');
   grunt.loadNpmTasks('grunt-asar');
