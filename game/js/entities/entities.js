@@ -34,10 +34,17 @@ game.PlayerEntity = me.Entity.extend({
 		game.data.playerPos.x = this.pos.x;
 		game.data.fuel -= 1;
 
+		if(game.data.fuel <= 0) {
+      console.warn('GAME OVER! No fuel');
+      me.state.change(me.state.GAMEOVER);
+    }
+
+
 		if(this.generateB++ % this.frequencyBullet == 0) {
 			var bullet = new me.pool.pull('bulletP', this.pos.x + 8, this.pos.y - 16);
 			me.game.world.addChild(bullet, 11);
 		}
+
 
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
