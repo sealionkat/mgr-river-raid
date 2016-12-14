@@ -49,7 +49,7 @@ game.PlayerEntity = me.Entity.extend({
 		if(obj.type == 'fuel') {
 			game.data.fuel = game.data.maxFuel;
 			console.log('tank');
-			me.game.world.removeChild(obj);
+      obj.ancestor.removeChild(obj);
 		}
 
 		if(obj.type == 'enemy' || obj.type == 'rock' || obj.type == 'bulletE') {
@@ -90,7 +90,7 @@ game.EnemyVEntity = me.Entity.extend({
 	update: function(dt) {
 		this.pos.add(this.body.vel);
 		if(this.pos.y > game.data.height) {
-			me.game.world.removeChild(this);
+      this.ancestor.removeChild(this);
 		}
 
 		if(this.generate++ % this.frequency == 0) {
@@ -126,8 +126,8 @@ game.EnemyVEntity = me.Entity.extend({
 			this.collided = true;
 			console.log('enemy shot');
 			game.data.score += 50;
-			me.game.world.removeChild(secondObj);
-			me.game.world.removeChild(this);
+      secondObj.ancestor.removeChild(secondObj);
+      this.ancestor.removeChild(this);
 		}
 
 	}
@@ -157,7 +157,7 @@ game.EnemyHEntity = me.Entity.extend({
 			this.body.vel.set(0, 1);
 		}
 		if(this.pos.y > game.data.height) {
-			me.game.world.removeChild(this);
+      this.ancestor.removeChild(this);
 		}
 
 		if(this.generate++ % this.frequency == 0) {
@@ -193,8 +193,8 @@ game.EnemyHEntity = me.Entity.extend({
 			this.collided = true;
 			console.log('enemy shot');
 			game.data.score += 50;
-			me.game.world.removeChild(secondObj);
-			me.game.world.removeChild(this);
+      secondObj.ancestor.removeChild(secondObj);
+      this.ancestor.removeChild(this);
 		}
 
 	}
@@ -229,7 +229,7 @@ game.BulletPEntity = me.Entity.extend({
 	update: function(dt) {
 		this.pos.add(this.body.vel);
 		if(this.pos.y < 0) {
-			me.game.world.removeChild(this);
+      this.ancestor.removeChild(this);
 		}
 		me.Rect.prototype.updateBounds.apply(this);
 		this._super(me.Entity, 'update', [dt]);
@@ -255,7 +255,7 @@ game.BulletEEntity = me.Entity.extend({
 	update: function(dt) {
 		this.pos.add(this.body.vel);
 		if(this.pos.y > game.data.height) {
-			me.game.world.removeChild(this);
+      this.ancestor.removeChild(this);
 		}
 		me.Rect.prototype.updateBounds.apply(this);
 		this._super(me.Entity, 'update', [dt]);
@@ -281,10 +281,11 @@ game.FuelEntity = me.Entity.extend({
 	update: function(dt) {
 		this.pos.add(this.body.vel);
 		if(this.pos.y > game.data.height) {
-			me.game.world.removeChild(this);
+      this.ancestor.removeChild(this);
 		}
 		me.Rect.prototype.updateBounds.apply(this);
 		this._super(me.Entity, 'update', [dt]);
+
 		return true;
 	}
 });
@@ -309,6 +310,7 @@ game.EnemiesGenerator = me.Renderable.extend({
 			me.game.world.addChild(enemy, 10);
 		}
 		this._super(me.Entity, 'update', [dt]);
+
 		return true;
 	}
 });
