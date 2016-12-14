@@ -60,7 +60,7 @@ game.PlayerEntity = me.Entity.extend({
       obj.ancestor.removeChild(obj);
 		}
 
-		if(obj.type == 'enemy' || obj.type == 'rock' || obj.type == 'bulletE') {
+		if(obj.type == 'enemy' || obj.type == 'bulletE') {
 			this.collided = true;
 			console.warn('GAME OVER!');
 			me.state.change(me.state.GAMEOVER);
@@ -210,15 +210,6 @@ game.EnemyHEntity = me.Entity.extend({
 	}
 });
 
-game.RockSEntity = me.Entity.extend({
-	init: function() {},
-	update: function() {}
-});
-
-game.RockBEntity = me.Entity.extend({
-	init: function() {},
-	update: function() {}
-});
 
 game.BulletPEntity = me.Entity.extend({
 	init: function(x, y) {
@@ -327,10 +318,10 @@ game.EnemiesGenerator = me.Renderable.extend({
 	}
 });
 
-game.RocksGenerator = me.Renderable.extend({
+/*game.RocksGenerator = me.Renderable.extend({
 	init: function() {},
 	update: function() {}
-});
+});*/
 
 game.FuelGenerator = me.Renderable.extend({
 	init: function() {
