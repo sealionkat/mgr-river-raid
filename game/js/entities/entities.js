@@ -32,6 +32,7 @@ game.PlayerEntity = me.Entity.extend({
 			}
 		}
 		game.data.playerPos.x = this.pos.x;
+		game.data.fuel -= 1;
 
 		if(this.generateB++ % this.frequencyBullet == 0) {
 			var bullet = new me.pool.pull('bulletP', this.pos.x + 8, this.pos.y - 16);

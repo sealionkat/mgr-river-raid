@@ -4,7 +4,7 @@ game.PlayScreen = me.ScreenObject.extend({
 		me.input.bindKey(me.input.KEY.RIGHT, 'right');
 
 		game.data.score = 0;
-		game.data.fuel = 100;
+		game.data.fuel = 2000;
 		game.data.playerPos = {
 			x: game.data.width / 2,
 			y: game.data.height - 100

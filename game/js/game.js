@@ -2,8 +2,8 @@
 var game = {
 	data: {
 		score: 0,
-		fuel: 100,
-		maxFuel: 100,
+		fuel: 2000,
+		maxFuel: 2000,
 		height: 800,
 		width: 480,
 		groundWidth: 30
