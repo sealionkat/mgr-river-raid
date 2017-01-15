@@ -28,7 +28,9 @@ var game = {
 	loaded: function() {
 		//me.state.set(me.state.MENU, new game.TitleScreen());
 		this.playScreen = new game.PlayScreen();
+		this.gameoverScreen = new game.GameoverScreen();
 		me.state.set(me.state.PLAY, this.playScreen);
+		me.state.set(me.state.GAMEOVER, this.gameoverScreen);
 
 		me.input.bindKey(me.input.KEY.LEFT, 'left');
 		me.input.bindKey(me.input.KEY.RIGHT, 'right');
