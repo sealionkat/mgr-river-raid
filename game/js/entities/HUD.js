@@ -11,7 +11,7 @@ game.HUD.Container = me.Container.extend({
         this._super(me.Container, 'init');
         this.isPersistent = true;
         this.floating = true;
-        this.name = "HUD";
+        this.name = 'HUD';
         this.addChild(new game.HUD.ScoreItem(5, 5));
     }
 });
