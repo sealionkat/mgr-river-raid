@@ -46,6 +46,13 @@ var game = {
 		me.pool.register('fuel', game.FuelEntity, true);
 
 		me.game.viewport.setBounds(0, 0, 480, 800);
-		me.state.change(me.state.PLAY);
+
+		var bot = new me.Botapi();
+
+		bot.initWebSockets().then(function() {
+		  console.log('Initialized');
+      me.state.change(me.state.PLAY);
+    });
+
 	}
 };
