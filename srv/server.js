@@ -38,8 +38,23 @@ wsServer.on('request', function(request) {
       console.log('Received Message: ' + message.utf8Data);
 
       //connection.sendUTF(message.utf8Data);
+
+
+
+      setTimeout(() => {
+        connection.sendUTF('playerpos')
+      }, 100);
+      //connection.sendUTF('playerpos');
     }
   });
+
+  setTimeout(() => {
+    if(connection.connected) {
+      connection.sendUTF('moveleft');
+      connection.sendUTF('playerpos');
+    }
+  }, 100);
+
   connection.on('close', function(reasonCode, description) {
     console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
   });
