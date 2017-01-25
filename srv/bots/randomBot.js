@@ -7,6 +7,10 @@ class RandomBot extends Bot {
 
     super.sayHello('RandomBot');
   }
+
+  analyze() {
+
+  }
 }
 
 module.exports = RandomBot;

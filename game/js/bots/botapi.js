@@ -40,6 +40,12 @@ me.Botapi = me.Object.extend({
         case 'whichbot':
           that.sendMessage(JSON.stringify({type: 'bot', data: 'random'}));
           break;
+        case 'botcreated':
+          that.sendMessage(JSON.stringify({type: 'gamestate', data: {
+            playerPos: that.getPlayerPos(),
+            board: that.getBoard().data
+          }}));
+          break;
         default:
           console.warn('unknown action');
       }
@@ -59,7 +65,10 @@ me.Botapi = me.Object.extend({
     return game.data.playerPos;
   },
   getBoard: function() {
-    return me.video.renderer.getContext2d(me.video.renderer.canvas).getImageData(0, 0, 480, 800);
+    var board = me.video.renderer.getContext2d(me.video.renderer.canvas).getImageData(0, 0, 480, 800);
+    console.log('getboard', board);
+
+    return board;
   },
   pressLeftKey: function() {
     console.warn('invoked pressleft', this);

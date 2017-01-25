@@ -14,7 +14,8 @@ server.listen(8081, function() {
 
 wsServer = new WebSocketServer({
   httpServer: server,
-  autoAcceptConnections: false
+  autoAcceptConnections: false,
+  maxReceivedFrameSize: 20000000
 });
 
 let connection = null;
@@ -36,7 +37,7 @@ wsServer.on('request', function(request) {
   console.log((new Date()) + ' Connection accepted.');
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
-      console.log('Received Message: ' + message.utf8Data);
+      //console.log('Received Message: ' + message.utf8Data);
       const data = JSON.parse(message.utf8Data);
 
       switch (data.type) {
@@ -47,7 +48,10 @@ wsServer.on('request', function(request) {
         case 'bot':
           console.log('bot!');
           bot = new RandomBot();
-          connection.sendUTF('moveleft');
+          connection.sendUTF('botcreated');
+          break;
+        case 'gamestate':
+          console.log('gamestate!');
           break;
         default:
           console.warn('unknown action!');
@@ -68,5 +72,6 @@ wsServer.on('request', function(request) {
 
   connection.on('close', function(reasonCode, description) {
     console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    console.log('Reason', reasonCode, ': ', description);
   });
 });
