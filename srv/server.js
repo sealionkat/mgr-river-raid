@@ -36,24 +36,33 @@ wsServer.on('request', function(request) {
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
       console.log('Received Message: ' + message.utf8Data);
+      const data = JSON.parse(message.utf8Data);
 
-      //connection.sendUTF(message.utf8Data);
+      switch (data.type) {
+        case 'handshake':
+          console.log('handshake!');
+          connection.sendUTF('whichbot');
+          break;
+        case 'bot':
+          console.log('bot!');
+          connection.sendUTF('moveleft');
+          break;
+        default:
+          console.warn('unknown action!');
+      }
 
+      /*
+      {
+      type: string
+      data: object | string
+       */
 
-
-      setTimeout(() => {
-        connection.sendUTF('playerpos')
-      }, 100);
-      //connection.sendUTF('playerpos');
     }
   });
 
-  setTimeout(() => {
-    if(connection.connected) {
-      connection.sendUTF('moveleft');
-      connection.sendUTF('playerpos');
-    }
-  }, 100);
+  if (connection.connected) {
+    connection.sendUTF('handshake');
+  }
 
   connection.on('close', function(reasonCode, description) {
     console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');

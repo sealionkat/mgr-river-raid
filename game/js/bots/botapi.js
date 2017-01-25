@@ -25,6 +25,12 @@ me.Botapi = me.Object.extend({
         case 'playerpos':
           that.sendMessage(JSON.stringify(that.getPlayerPos()));
           break;
+        case 'handshake':
+          that.sendMessage(JSON.stringify({type: 'handshake', data: {}}));
+          break;
+        case 'whichbot':
+          that.sendMessage(JSON.stringify({type: 'bot', data: 'random'}));
+          break;
         default:
           console.warn('unknown action');
       }
