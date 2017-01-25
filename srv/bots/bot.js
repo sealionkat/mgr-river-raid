@@ -1,6 +1,6 @@
 module.exports = class Bot {
 
-  sayHello() {
-    console.log('Hellooo!');
+  sayHello(name) {
+    console.log('Hellooo! I am', name);
   }
 };

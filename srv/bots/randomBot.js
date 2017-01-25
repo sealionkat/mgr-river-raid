@@ -5,7 +5,7 @@ class RandomBot extends Bot {
   constructor() {
     super();
 
-    super.sayHello();
+    super.sayHello('RandomBot');
   }
 }
 

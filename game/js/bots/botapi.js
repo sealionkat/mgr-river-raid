@@ -22,11 +22,20 @@ me.Botapi = me.Object.extend({
         case 'moveleft':
           that.pressLeftKey();
           break;
+        case 'releaseleft':
+          that.releaseLeftKey();
+          break;
+        case 'moveright':
+          that.pressRightKey();
+          break;
+        case 'releaseright':
+          that.releaseRightKey();
+          break;
         case 'playerpos':
           that.sendMessage(JSON.stringify(that.getPlayerPos()));
           break;
         case 'handshake':
-          that.sendMessage(JSON.stringify({type: 'handshake', data: {}}));
+          that.sendMessage(JSON.stringify({type: 'handshake', data: null}));
           break;
         case 'whichbot':
           that.sendMessage(JSON.stringify({type: 'bot', data: 'random'}));
@@ -71,18 +80,5 @@ me.Botapi = me.Object.extend({
   },
   sendMessage: function(msg) {
     this.ws.send(msg);
-  },
-  receiveMessage: function(event) {
-    console.log('thisss', this);
-    console.warn('received message', event );
-
-    switch (event.data) {
-      case 'moveleft':
-        this.pressLeftKey();
-        break;
-      default:
-        console.warn('unknown action');
-        break;
-    }
   }
 });

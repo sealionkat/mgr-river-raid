@@ -32,6 +32,7 @@ wsServer.on('request', function(request) {
   }
 
   connection = request.accept('echo-protocol', request.origin);
+  let bot = null;
   console.log((new Date()) + ' Connection accepted.');
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
@@ -45,6 +46,7 @@ wsServer.on('request', function(request) {
           break;
         case 'bot':
           console.log('bot!');
+          bot = new RandomBot();
           connection.sendUTF('moveleft');
           break;
         default:
@@ -54,7 +56,7 @@ wsServer.on('request', function(request) {
       /*
       {
       type: string
-      data: object | string
+      data: object | string | null
        */
 
     }
