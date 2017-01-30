@@ -34,10 +34,11 @@ wsServer.on('request', function(request) {
 
   connection = request.accept('echo-protocol', request.origin);
   let bot = null;
+  let gameover = false;
   console.log((new Date()) + ' Connection accepted.');
+
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
-      //console.log('Received Message: ' + message.utf8Data);
       const data = JSON.parse(message.utf8Data);
 
       switch (data.type) {
@@ -52,6 +53,15 @@ wsServer.on('request', function(request) {
           break;
         case 'gamestate':
           console.log('gamestate!');
+          if(!gameover) {
+            setTimeout(function () {
+              connection.sendUTF('getgamestate');
+            }, 100);
+          }
+          break;
+        case 'gameover':
+          gameover = true;
+          console.log('gameover');
           break;
         default:
           console.warn('unknown action!');

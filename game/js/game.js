@@ -47,9 +47,9 @@ var game = {
 
 		me.game.viewport.setBounds(0, 0, 480, 800);
 
-		var bot = new me.Botapi();
+		me.game.bot = new me.Botapi();
 
-		bot.initWebSockets().then(function() {
+    me.game.bot.initWebSockets().then(function() {
 		  console.log('Initialized');
       me.state.change(me.state.PLAY);
     });

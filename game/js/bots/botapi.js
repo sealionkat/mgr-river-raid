@@ -16,8 +16,6 @@ me.Botapi = me.Object.extend({
     };
 
     this.ws.onmessage = function(event) {
-      console.warn('received message', event);
-
       switch(event.data) {
         case 'moveleft':
           that.pressLeftKey();
@@ -41,6 +39,14 @@ me.Botapi = me.Object.extend({
           that.sendMessage(JSON.stringify({type: 'bot', data: 'random'}));
           break;
         case 'botcreated':
+          that.initBoard();
+          that.sendMessage(JSON.stringify({type: 'gamestate', data: {
+            playerPos: that.getPlayerPos(),
+            board: that.getBoard().data
+          }}));
+          break;
+        case 'getgamestate':
+          console.log('getgamestate');
           that.sendMessage(JSON.stringify({type: 'gamestate', data: {
             playerPos: that.getPlayerPos(),
             board: that.getBoard().data
@@ -61,14 +67,14 @@ me.Botapi = me.Object.extend({
 
     return deferred.promise;
   },
+  initBoard: function() {
+    this.board = me.video.renderer.getContext2d(me.video.renderer.canvas);
+  },
   getPlayerPos: function() {
     return game.data.playerPos;
   },
   getBoard: function() {
-    var board = me.video.renderer.getContext2d(me.video.renderer.canvas).getImageData(0, 0, 480, 800);
-    console.log('getboard', board);
-
-    return board;
+    return this.board.getImageData(0, 0, 480, 800);
   },
   pressLeftKey: function() {
     console.warn('invoked pressleft', this);
@@ -86,6 +92,9 @@ me.Botapi = me.Object.extend({
   releaseRightKey: function() {
     me.input.triggerKeyEvent(me.input.KEY.RIGHT, false);
     this.pressedKey = null;
+  },
+  sendGameOver: function() {
+    this.sendMessage(JSON.stringify({type: 'gameover'}));
   },
   sendMessage: function(msg) {
     this.ws.send(msg);
