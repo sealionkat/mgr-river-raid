@@ -73,6 +73,13 @@ wsServer.on('request', function(request) {
       data: object | string | null
        */
 
+    } else {
+      console.log('gamestate!');
+      if(!gameover) {
+        setTimeout(function () {
+          connection.sendUTF('getgamestate');
+        }, 100);
+      }
     }
   });
 

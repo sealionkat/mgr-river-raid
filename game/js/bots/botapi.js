@@ -47,10 +47,7 @@ me.Botapi = me.Object.extend({
           break;
         case 'getgamestate':
           console.log('getgamestate');
-          that.sendMessage(JSON.stringify({type: 'gamestate', data: {
-            playerPos: that.getPlayerPos(),
-            board: that.getBoard().data
-          }}));
+          that.sendMessage(that.getBoard().data);
           break;
         default:
           console.warn('unknown action');
