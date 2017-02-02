@@ -42,7 +42,7 @@ me.Botapi = me.Object.extend({
           that.initBoard();
           that.sendMessage(JSON.stringify({type: 'gamestate', data: {
             playerPos: that.getPlayerPos(),
-            board: that.getBoard().data
+            //board: that.getBoard().data
           }}));
           break;
         case 'getgamestate':
@@ -95,5 +95,8 @@ me.Botapi = me.Object.extend({
   },
   sendMessage: function(msg) {
     this.ws.send(msg);
+  },
+  parseMessage: function(event) {
+
   }
 });
