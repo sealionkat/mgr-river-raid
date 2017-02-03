@@ -7,7 +7,7 @@ me.Botapi = me.Object.extend({
     var that = this;
     console.log('Creating WebSocket client');
 
-    this.pressLeftKey.bind(this);
+    this.pressLeftKey = this.pressLeftKey.bind(this);
 
     this.ws = new WebSocket('ws://localhost:8081', 'echo-protocol');
     this.ws.onopen = function() {
@@ -30,7 +30,7 @@ me.Botapi = me.Object.extend({
           that.releaseRightKey();
           break;
         case 'playerpos':
-          that.sendMessage(JSON.stringify(that.getPlayerPos()));
+          that.sendMessage(JSON.stringify({type: 'playerpos', data: that.getPlayerPos()}));
           break;
         case 'handshake':
           that.sendMessage(JSON.stringify({type: 'handshake', data: null}));
@@ -40,10 +40,7 @@ me.Botapi = me.Object.extend({
           break;
         case 'botcreated':
           that.initBoard();
-          that.sendMessage(JSON.stringify({type: 'gamestate', data: {
-            playerPos: that.getPlayerPos(),
-            //board: that.getBoard().data
-          }}));
+          that.sendMessage(JSON.stringify({type: 'idle', data: {}}));
           break;
         case 'getgamestate':
           console.log('getgamestate');

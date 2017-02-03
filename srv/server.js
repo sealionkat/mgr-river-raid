@@ -1,6 +1,9 @@
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const RandomBot = require('./bots/randomBot');
+const {RECEIVED_MESSAGES, SENT_MESSAGES} = require('./messagesTypes');
+const CONFIG = require('./config');
+
 
 const server = http.createServer(function(request, response) {
   console.log((new Date()) + ' Received request for ' + request.url);
@@ -8,14 +11,14 @@ const server = http.createServer(function(request, response) {
   response.end();
 });
 
-server.listen(8081, function() {
+server.listen(CONFIG.PORT, function() {
   console.log((new Date()) + ' Server is listening on port 8081');
 });
 
 wsServer = new WebSocketServer({
   httpServer: server,
   autoAcceptConnections: false,
-  maxReceivedFrameSize: 20000000
+  maxReceivedFrameSize: CONFIG.MAXFRAMESIZE
 });
 
 let connection = null;
@@ -40,51 +43,54 @@ wsServer.on('request', function(request) {
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
       const data = JSON.parse(message.utf8Data);
+      let timeoutId = null;
 
       switch (data.type) {
-        case 'handshake':
+        case RECEIVED_MESSAGES.HANDSHAKE:
           console.log('handshake!');
-          connection.sendUTF('whichbot');
+          connection.sendUTF(SENT_MESSAGES.WHICHBOT);
           break;
-        case 'bot':
+        case RECEIVED_MESSAGES.BOT:
           console.log('bot!');
           bot = new RandomBot();
-          connection.sendUTF('botcreated');
+          connection.sendUTF(SENT_MESSAGES.BOTCREATED);
           break;
-        case 'gamestate':
-          console.log('gamestate!');
+        case RECEIVED_MESSAGES.IDLE:
+          console.log('idle');
           if(!gameover) {
-            setTimeout(function () {
-              connection.sendUTF('getgamestate');
-            }, 100);
+            timeoutId = setTimeout(function () {
+              connection.sendUTF(SENT_MESSAGES.GETGAMESTATE);
+            }, CONFIG.TIMEOUT);
           }
           break;
-        case 'gameover':
+        case RECEIVED_MESSAGES.GAMESTATE:
+          console.log('gamestate!');
+          if(!gameover) {
+            timeoutId = setTimeout(function () {
+              connection.sendUTF(SENT_MESSAGES.GETGAMESTATE);
+            }, CONFIG.TIMEOUT);
+          }
+          break;
+        case RECEIVED_MESSAGES.GAMEOVER:
+          clearTimeout(timeoutId);
           gameover = true;
           console.log('gameover');
           break;
         default:
           console.warn('unknown action!');
       }
-
-      /*
-      {
-      type: string
-      data: object | string | null
-       */
-
     } else {
       console.log('gamestate!');
       if(!gameover) {
         setTimeout(function () {
-          connection.sendUTF('getgamestate');
-        }, 100);
+          connection.sendUTF(SENT_MESSAGES.GETGAMESTATE);
+        }, CONFIG.TIMEOUT);
       }
     }
   });
 
   if (connection.connected) {
-    connection.sendUTF('handshake');
+    connection.sendUTF(SENT_MESSAGES.HANDSHAKE);
   }
 
   connection.on('close', function(reasonCode, description) {

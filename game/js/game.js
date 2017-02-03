@@ -50,7 +50,7 @@ var game = {
 		me.game.bot = new me.Botapi();
 
     me.game.bot.initWebSockets().then(function() {
-		  console.log('Initialized');
+		  console.log('Initialized WebSockets');
       me.state.change(me.state.PLAY);
     });
 
