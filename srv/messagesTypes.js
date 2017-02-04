@@ -6,7 +6,11 @@ module.exports = {
     GAMEOVER: 'gameover',
     GAMESTATE: 'gamestate',
     PLAYERPOS: 'playerpos',
-    BOARD: 'board'
+    BOARD: 'board',
+    PRESSEDLEFTKEY: 'pressedLeftKey',
+    PRESSEDRIGHTKEY: 'pressedRightKey',
+    RELEASEDLEFTKEY: 'releasedLeftKey',
+    RELEASEDRIGHTKEY: 'releasedRightKey'
   },
   SENT_MESSAGES: {
     HANDSHAKE: 'handshake',

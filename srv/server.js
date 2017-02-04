@@ -64,10 +64,10 @@ wsServer.on('request', function(request) {
           }
           break;
         case RECEIVED_MESSAGES.GAMESTATE:
-          console.log('gamestate!', data.data);
+          console.log('gamestate');
           if(!gameover) {
             timeoutId = setTimeout(function () {
-              connection.sendUTF(SENT_MESSAGES.GETGAMESTATE);
+              connection.sendUTF(bot.analyze(RECEIVED_MESSAGES.GAMESTATE, data.data));
             }, CONFIG.TIMEOUT);
           }
           break;
@@ -76,8 +76,17 @@ wsServer.on('request', function(request) {
           gameover = true;
           console.log('gameover');
           break;
+        case RECEIVED_MESSAGES.PRESSEDLEFTKEY:
+        case RECEIVED_MESSAGES.PLAYERPOS:
+        case RECEIVED_MESSAGES.PRESSEDRIGHTKEY:
+        case RECEIVED_MESSAGES.RELEASEDLEFTKEY:
+        case RECEIVED_MESSAGES.RELEASEDRIGHTKEY:
+          timeoutId = setTimeout(() => {
+            connection.sendUTF(bot.analyze(data.type, data.data));
+          }, CONFIG.TIMEOUT);
+          break;
         default:
-          console.warn('unknown action!');
+          console.warn('unknown action!', data.type);
       }
     } else { // binary data
       console.log('gameboard!');

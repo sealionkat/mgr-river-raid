@@ -19,15 +19,19 @@ me.Botapi = me.Object.extend({
       switch (event.data) {
         case 'moveleft':
           that.pressLeftKey();
+          that.sendMessage(JSON.stringify({type: 'pressedLeftKey', data: null}));
           break;
         case 'releaseleft':
           that.releaseLeftKey();
+          that.sendMessage(JSON.stringify({type: 'releasedLeftKey', data: null}));
           break;
         case 'moveright':
           that.pressRightKey();
+          that.sendMessage(JSON.stringify({type: 'pressedRightKey', data: null}));
           break;
         case 'releaseright':
           that.releaseRightKey();
+          that.sendMessage(JSON.stringify({type: 'releasedRightKey', data: null}));
           break;
         case 'getplayerpos':
           that.sendMessage(JSON.stringify({type: 'playerpos', data: that.getPlayerPos()}));
