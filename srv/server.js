@@ -56,11 +56,10 @@ wsServer.on('request', function(request) {
           connection.sendUTF(SENT_MESSAGES.BOTCREATED);
           break;
         case RECEIVED_MESSAGES.IDLE:
-          console.log('idle');
+          console.log('idle', data.data);
           if(!gameover) {
             timeoutId = setTimeout(function () {
-              //connection.sendUTF(SENT_MESSAGES.GETBOARD);
-              connection.sendUTF(SENT_MESSAGES.GETGAMESTATE);
+              connection.sendUTF(bot.firstStepMessage());
             }, CONFIG.TIMEOUT);
           }
           break;

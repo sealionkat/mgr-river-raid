@@ -319,11 +319,6 @@ game.EnemiesGenerator = me.Renderable.extend({
 	}
 });
 
-/*game.RocksGenerator = me.Renderable.extend({
-	init: function() {},
-	update: function() {}
-});*/
-
 game.FuelGenerator = me.Renderable.extend({
 	init: function() {
 		this._super(me.Renderable, 'init', [0, 0, me.game.viewport.width, me.game.viewport.height]);

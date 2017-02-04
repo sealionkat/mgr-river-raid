@@ -5,4 +5,8 @@ module.exports = class Bot {
   }
 
   analyze() {}
+
+  decide() {}
+
+  firstStep() {}
 };

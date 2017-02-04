@@ -1,3 +1,4 @@
+const {SENT_MESSAGES} = require('../messagesTypes');
 const Bot = require('./bot');
 
 
@@ -8,8 +9,14 @@ class RandomBot extends Bot {
     super.sayHello('RandomBot');
   }
 
-  analyze() {
+  analyze({playerPos}) {
 
+  }
+
+  decide() {}
+
+  firstStepMessage() {
+    return SENT_MESSAGES.GETGAMESTATE;
   }
 }
 

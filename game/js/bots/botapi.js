@@ -40,9 +40,16 @@ me.Botapi = me.Object.extend({
           break;
         case 'botcreated':
           that.initBoard();
-          that.sendMessage(JSON.stringify({type: 'idle', data: {}}));
+          that.sendMessage(JSON.stringify({
+            type: 'idle', data: {
+              boardSizes: [0, 0, 480, 800],
+              groundWidth: game.data.groundWidth,
+              playerPos: that.getPlayerPos()
+            }
+          }));
           break;
         case 'getgamestate':
+          console.log('gamestate');
           that.sendMessage(JSON.stringify({
             type: 'gamestate', data: {
               playerPos: that.getPlayerPos(),
@@ -82,8 +89,8 @@ me.Botapi = me.Object.extend({
   getGameObjects: function () {
     var objects = _.cloneDeep(me.game.world.children);
     var filteredObjects = [];
-    objects.filter(function(item) {
-      switch(item.type) {
+    objects = objects.filter(function (item) {
+      switch (item.type) {
         case 'enemy':
         case 'bulletP':
         case 'bulletE':
@@ -94,7 +101,7 @@ me.Botapi = me.Object.extend({
       }
     });
 
-    for(var i = 0, iss = objects.length; i < iss; ++i) {
+    for (var i = 0, iss = objects.length; i < iss; ++i) {
       var obj = objects[i];
       filteredObjects.push(_.pick(obj, ['pos', 'type', 'name']));
     }
