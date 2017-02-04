@@ -59,12 +59,13 @@ wsServer.on('request', function(request) {
           console.log('idle');
           if(!gameover) {
             timeoutId = setTimeout(function () {
+              //connection.sendUTF(SENT_MESSAGES.GETBOARD);
               connection.sendUTF(SENT_MESSAGES.GETGAMESTATE);
             }, CONFIG.TIMEOUT);
           }
           break;
         case RECEIVED_MESSAGES.GAMESTATE:
-          console.log('gamestate!');
+          console.log('gamestate!', data.data);
           if(!gameover) {
             timeoutId = setTimeout(function () {
               connection.sendUTF(SENT_MESSAGES.GETGAMESTATE);
@@ -79,11 +80,11 @@ wsServer.on('request', function(request) {
         default:
           console.warn('unknown action!');
       }
-    } else {
-      console.log('gamestate!');
+    } else { // binary data
+      console.log('gameboard!');
       if(!gameover) {
         setTimeout(function () {
-          connection.sendUTF(SENT_MESSAGES.GETGAMESTATE);
+          connection.sendUTF(SENT_MESSAGES.GETBOARD);
         }, CONFIG.TIMEOUT);
       }
     }

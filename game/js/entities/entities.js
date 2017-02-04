@@ -11,6 +11,7 @@ game.PlayerEntity = me.Entity.extend({
 		this.speed = 2.0;
 		this.alwaysUpdate = true;
 		this.collided = false;
+		this.type = 'player';
 
 		this.frequencyBullet = 75;
 		this.generateB = 0;
