@@ -71,7 +71,7 @@ wsServer.on('request', function(request) {
         case RECEIVED_MESSAGES.RELEASEDRIGHTKEY:
           if(!gameover) {
             timeoutId = setTimeout(() => {
-              connection.sendUTF(bot.analyze(RECEIVED_MESSAGES.GAMESTATE, data.data));
+              connection.sendUTF(bot.analyze(data.type, data.data));
             }, CONFIG.TIMEOUT);
           }
           break;
