@@ -58,15 +58,19 @@ wsServer.on('request', function(request) {
         case RECEIVED_MESSAGES.IDLE:
           console.log('idle', data.data);
           if(!gameover) {
-            timeoutId = setTimeout(function () {
+            timeoutId = setTimeout(() => {
               connection.sendUTF(bot.firstStepMessage());
             }, CONFIG.TIMEOUT);
           }
           break;
         case RECEIVED_MESSAGES.GAMESTATE:
-          console.log('gamestate');
+        case RECEIVED_MESSAGES.PRESSEDLEFTKEY:
+        case RECEIVED_MESSAGES.PLAYERPOS:
+        case RECEIVED_MESSAGES.PRESSEDRIGHTKEY:
+        case RECEIVED_MESSAGES.RELEASEDLEFTKEY:
+        case RECEIVED_MESSAGES.RELEASEDRIGHTKEY:
           if(!gameover) {
-            timeoutId = setTimeout(function () {
+            timeoutId = setTimeout(() => {
               connection.sendUTF(bot.analyze(RECEIVED_MESSAGES.GAMESTATE, data.data));
             }, CONFIG.TIMEOUT);
           }
@@ -75,15 +79,6 @@ wsServer.on('request', function(request) {
           clearTimeout(timeoutId);
           gameover = true;
           console.log('gameover');
-          break;
-        case RECEIVED_MESSAGES.PRESSEDLEFTKEY:
-        case RECEIVED_MESSAGES.PLAYERPOS:
-        case RECEIVED_MESSAGES.PRESSEDRIGHTKEY:
-        case RECEIVED_MESSAGES.RELEASEDLEFTKEY:
-        case RECEIVED_MESSAGES.RELEASEDRIGHTKEY:
-          timeoutId = setTimeout(() => {
-            connection.sendUTF(bot.analyze(data.type, data.data));
-          }, CONFIG.TIMEOUT);
           break;
         default:
           console.warn('unknown action!', data.type);
