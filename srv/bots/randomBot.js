@@ -16,12 +16,10 @@ class RandomBot extends Bot {
       case RECEIVED_MESSAGES.PRESSEDRIGHTKEY:
         this.pressedKey = receivedMessage;
         return SENT_MESSAGES.GETPLAYERPOS;
-        break;
       case RECEIVED_MESSAGES.RELEASEDLEFTKEY:
       case RECEIVED_MESSAGES.RELEASEDRIGHTKEY:
         this.pressedKey = null;
         return SENT_MESSAGES.GETPLAYERPOS;
-        break;
       case RECEIVED_MESSAGES.PLAYERPOS:
         if(data.x <= 30 && this.pressedKey !== null) {
           return SENT_MESSAGES.RELEASELEFT;
@@ -33,10 +31,8 @@ class RandomBot extends Bot {
           return SENT_MESSAGES.MOVELEFT;
         }
         return SENT_MESSAGES.GETPLAYERPOS;
-        break;
       case RECEIVED_MESSAGES.GAMESTATE:
         return SENT_MESSAGES.MOVELEFT;
-        break;
       default:
         console.log('unknown or unimplemented action', receivedMessage);
     }
@@ -44,12 +40,9 @@ class RandomBot extends Bot {
     return SENT_MESSAGES.GETPLAYERPOS;
   }
 
-  decide() {}
-
   firstStepMessage() {
     return SENT_MESSAGES.GETGAMESTATE;
   }
 }
 
 module.exports = RandomBot;
-
