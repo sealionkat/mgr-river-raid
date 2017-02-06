@@ -26,9 +26,10 @@ var game = {
 		me.state.change(me.state.LOADING);
 	},
 	loaded: function() {
-		//me.state.set(me.state.MENU, new game.TitleScreen());
+		this.titleScreen = new game.TitleScreen();
 		this.playScreen = new game.PlayScreen();
 		this.gameoverScreen = new game.GameoverScreen();
+    me.state.set(me.state.MENU, this.titleScreen);
 		me.state.set(me.state.PLAY, this.playScreen);
 		me.state.set(me.state.GAMEOVER, this.gameoverScreen);
 
@@ -47,11 +48,6 @@ var game = {
 
 		me.game.viewport.setBounds(0, 0, 480, 800);
 
-		me.game.bot = new me.Botapi();
-
-    me.game.bot.initWebSockets().then(function() {
-		  console.log('Initialized WebSockets');
-      me.state.change(me.state.PLAY);
-    });
+		me.state.change(me.state.MENU);
 	}
 };
