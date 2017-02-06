@@ -2,16 +2,19 @@ me.Botapi = me.Object.extend({
   init: function () {
     console.log('Creating bot');
   },
+  initBoard: function () {
+    this.board = me.video.renderer.getContext2d(me.video.renderer.canvas);
+  },
   initWebSockets: function () {
     var deferred = Q.defer();
     var that = this;
     console.log('Creating WebSocket client');
 
-    this.pressLeftKey = this.pressLeftKey.bind(this);
+    this.parseMessage = this.parseMessage.bind(this);
 
     this.ws = new WebSocket('ws://localhost:8081', 'echo-protocol');
     this.ws.onopen = function () {
-      console.warn('Bot connected to WebSocket server');
+      console.log('Bot connected to WebSocket server');
       deferred.resolve();
     };
 
@@ -19,52 +22,49 @@ me.Botapi = me.Object.extend({
       switch (event.data) {
         case 'moveleft':
           that.pressLeftKey();
-          that.sendMessage(JSON.stringify({type: 'pressedLeftKey', data: null}));
+          that.sendStringMessage({type: 'pressedLeftKey', data: null});
           break;
         case 'releaseleft':
           that.releaseLeftKey();
-          that.sendMessage(JSON.stringify({type: 'releasedLeftKey', data: null}));
+          that.sendStringMessage({type: 'releasedLeftKey', data: null});
           break;
         case 'moveright':
           that.pressRightKey();
-          that.sendMessage(JSON.stringify({type: 'pressedRightKey', data: null}));
+          that.sendStringMessage({type: 'pressedRightKey', data: null});
           break;
         case 'releaseright':
           that.releaseRightKey();
-          that.sendMessage(JSON.stringify({type: 'releasedRightKey', data: null}));
+          that.sendStringMessage({type: 'releasedRightKey', data: null});
           break;
         case 'getplayerpos':
-          that.sendMessage(JSON.stringify({type: 'playerpos', data: that.getPlayerPos()}));
+          that.sendStringMessage({type: 'playerpos', data: that.getPlayerPos()});
           break;
         case 'handshake':
-          that.sendMessage(JSON.stringify({type: 'handshake', data: null}));
+          that.sendStringMessage({type: 'handshake', data: null});
           break;
         case 'whichbot':
-          that.sendMessage(JSON.stringify({type: 'bot', data: 'random'}));
+          that.sendStringMessage({type: 'bot', data: 'random'});
           break;
         case 'botcreated':
           that.initBoard();
-          that.sendMessage(JSON.stringify({
+          that.sendStringMessage({
             type: 'idle', data: {
               boardSizes: [0, 0, 480, 800],
               groundWidth: game.data.groundWidth,
               playerPos: that.getPlayerPos()
             }
-          }));
+          });
           break;
         case 'getgamestate':
-          console.log('gamestate');
-          that.sendMessage(JSON.stringify({
+          that.sendStringMessage({
             type: 'gamestate', data: {
               playerPos: that.getPlayerPos(),
               gameObjects: that.getGameObjects()
             }
-          }));
-
+          });
           break;
         case 'getboard':
-          console.log('getboard');
-          that.sendMessage(that.getBoard().data);
+          that.sendBinaryMessage(that.getBoard().data);
           break;
         default:
           console.warn('unknown action', event.data);
@@ -78,11 +78,10 @@ me.Botapi = me.Object.extend({
       console.warn('WebSocket connection closed', event);
     };
 
-
     return deferred.promise;
   },
-  initBoard: function () {
-    this.board = me.video.renderer.getContext2d(me.video.renderer.canvas);
+  sendGameOver: function () {
+    this.sendStringMessage({type: 'gameover', data: null});
   },
   getPlayerPos: function () {
     return game.data.playerPos;
@@ -129,10 +128,10 @@ me.Botapi = me.Object.extend({
     me.input.triggerKeyEvent(me.input.KEY.RIGHT, false);
     this.pressedKey = null;
   },
-  sendGameOver: function () {
-    this.sendMessage(JSON.stringify({type: 'gameover'}));
+  sendStringMessage: function(msg) {
+    this.ws.send(JSON.stringify(msg))
   },
-  sendMessage: function (msg) {
+  sendBinaryMessage: function(msg) {
     this.ws.send(msg);
   },
   parseMessage: function (event) {
