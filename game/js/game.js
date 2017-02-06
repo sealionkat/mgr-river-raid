@@ -53,6 +53,5 @@ var game = {
 		  console.log('Initialized WebSockets');
       me.state.change(me.state.PLAY);
     });
-
 	}
 };

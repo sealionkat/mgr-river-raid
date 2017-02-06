@@ -40,12 +40,10 @@ game.PlayerEntity = me.Entity.extend({
       me.state.change(me.state.GAMEOVER);
     }
 
-
 		if(this.generateB++ % this.frequencyBullet == 0) {
 			var bullet = new me.pool.pull('bulletP', this.pos.x + 8, this.pos.y - 16);
 			me.game.world.addChild(bullet, 11);
 		}
-
 
 		me.collision.check(this);
 		this._super(me.Entity, 'update', [dt]);
@@ -132,6 +130,7 @@ game.EnemyVEntity = me.Entity.extend({
 		if(secondObj.type == 'enemy' || secondObj.type == 'bulletE') {
 			return false;
 		}
+
 		if(secondObj.type == 'bulletP') {
 			this.collided = true;
 			console.log('enemy shot');
@@ -139,7 +138,6 @@ game.EnemyVEntity = me.Entity.extend({
       secondObj.ancestor.removeChild(secondObj);
       this.ancestor.removeChild(this);
 		}
-
 	}
 });
 
@@ -173,6 +171,7 @@ game.EnemyHEntity = me.Entity.extend({
 		if(this.generate++ % this.frequency == 0) {
 			var bullet = new me.pool.pull('bulletE', this.pos.x + 8, this.pos.y + 32);
 			var diffPos = this.pos.x - game.data.playerPos.x; //todo
+
 			if(diffPos > 0) {
 				bullet.body.vel.set(-1, 2);
 			} else if(diffPos < 0) {
@@ -180,6 +179,7 @@ game.EnemyHEntity = me.Entity.extend({
 			} else {
 				bullet.body.vel.set(0, 2);
 			}
+
 			me.game.world.addChild(bullet, 11);
 		}
 
@@ -200,6 +200,7 @@ game.EnemyHEntity = me.Entity.extend({
 		if(secondObj.type == 'enemy' || secondObj.type == 'bulletE') {
 			return false;
 		}
+
 		if(secondObj.type == 'bulletP') {
 			this.collided = true;
 			console.log('enemy shot');
@@ -207,7 +208,6 @@ game.EnemyHEntity = me.Entity.extend({
       secondObj.ancestor.removeChild(secondObj);
       this.ancestor.removeChild(this);
 		}
-
 	}
 });
 
@@ -257,6 +257,7 @@ game.BulletEEntity = me.Entity.extend({
 	},
 	update: function(dt) {
 		this.pos.add(this.body.vel);
+
 		if(this.pos.y > game.data.height) {
       this.ancestor.removeChild(this);
 		}
@@ -284,9 +285,11 @@ game.FuelEntity = me.Entity.extend({
 	},
 	update: function(dt) {
 		this.pos.add(this.body.vel);
+
 		if(this.pos.y > game.data.height) {
       this.ancestor.removeChild(this);
 		}
+
 		me.Rect.prototype.updateBounds.apply(this);
 		this._super(me.Entity, 'update', [dt]);
 
@@ -309,10 +312,12 @@ game.EnemiesGenerator = me.Renderable.extend({
 			var enemy = new me.pool.pull('enemyV', posX, 0);
 			me.game.world.addChild(enemy, 11);
 		}
+
 		if(this.generateH++ % this.frequencyH == 0) {
 			var enemy = new me.pool.pull('enemyH', game.data.width - game.data.groundWidth - 32, 0);
 			me.game.world.addChild(enemy, 10);
 		}
+
 		this._super(me.Entity, 'update', [dt]);
 
 		return true;
