@@ -1,15 +1,15 @@
 /* Game namespace */
 var game = {
 	data: {
-		score: 0,
-		fuel: 2000,
-		maxFuel: 2000,
-		height: 800,
-		width: 480,
-		groundWidth: 30
+		score: CONFIG.INIT.SCORE,
+		fuel: CONFIG.INIT.FUEL,
+		maxFuel: CONFIG.INIT.MAXFUEL,
+		height: CONFIG.INIT.HEIGHT,
+		width: CONFIG.INIT.WIDTH,
+		groundWidth: CONFIG.INIT.GROUNDWIDTH
 	},
 	onload: function() {
-		if(!me.video.init(480, 800, {wrapper: 'screen', scale: 'auto'})) {
+		if(!me.video.init(CONFIG.INIT.WIDTH, CONFIG.INIT.HEIGHT, {wrapper: 'screen', scale: 'auto'})) {
 			alert('Your browser does not support HTML5 canvas.');
 
 			return;
@@ -36,17 +36,15 @@ var game = {
 		me.input.bindKey(me.input.KEY.LEFT, 'left');
 		me.input.bindKey(me.input.KEY.RIGHT, 'right');
 
-		me.pool.register('player', game.PlayerEntity);
-		me.pool.register('enemyV', game.EnemyVEntity);
-		me.pool.register('enemyH', game.EnemyHEntity, true);
-		me.pool.register('rockS', game.RockSEntity, true);
-		me.pool.register('rockB', game.RockBEntity, true);
-		me.pool.register('background', game.Ground);
-		me.pool.register('bulletP', game.BulletPEntity, true);
-		me.pool.register('bulletE', game.BulletEEntity, true);
-		me.pool.register('fuel', game.FuelEntity, true);
+		me.pool.register(CONFIG.NAMES.PLAYER, game.PlayerEntity);
+		me.pool.register(CONFIG.NAMES.ENEMYV, game.EnemyVEntity);
+		me.pool.register(CONFIG.NAMES.ENEMYH, game.EnemyHEntity, true);
+		me.pool.register(CONFIG.NAMES.BACKGROUND, game.Ground);
+		me.pool.register(CONFIG.NAMES.BULLETP, game.BulletPEntity, true);
+		me.pool.register(CONFIG.NAMES.BULLETE, game.BulletEEntity, true);
+		me.pool.register(CONFIG.NAMES.FUEL, game.FuelEntity, true);
 
-		me.game.viewport.setBounds(0, 0, 480, 800);
+		me.game.viewport.setBounds(0, 0, CONFIG.INIT.WIDTH, CONFIG.INIT.HEIGHT);
 
 		me.state.change(me.state.MENU);
 	}

@@ -3,8 +3,8 @@ game.PlayScreen = me.ScreenObject.extend({
 		me.input.bindKey(me.input.KEY.LEFT, 'left');
 		me.input.bindKey(me.input.KEY.RIGHT, 'right');
 
-		game.data.score = 0;
-		game.data.fuel = 2000;
+		game.data.score = CONFIG.INIT.SCORE;
+		game.data.fuel = CONFIG.INIT.FUEL;
 		game.data.playerPos = {
 			x: game.data.width / 2,
 			y: game.data.height - 100
@@ -16,7 +16,7 @@ game.PlayScreen = me.ScreenObject.extend({
 		});
 		me.game.world.addChild(background, 1);
 
-		this.plane = me.pool.pull('player', game.data.width / 2, game.data.height - 100);
+		this.plane = me.pool.pull(CONFIG.NAMES.PLAYER, game.data.width / 2, game.data.height - 100);
 		me.game.world.addChild(this.plane, 11);
 
 		this.HUD = new game.HUD.Container();
@@ -35,6 +35,8 @@ game.PlayScreen = me.ScreenObject.extend({
 		if (typeof me.game.bot !== 'undefined') {
 			me.game.bot.sendGameOver();
 		}
-		//todo
+
+		me.input.unbindKey(me.input.KEY.LEFT);
+    me.input.unbindKey(me.input.KEY.RIGHT);
 	}
 });
