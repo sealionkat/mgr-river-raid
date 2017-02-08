@@ -64,7 +64,7 @@ CONFIG = {
     WIDTH: 16,
     HEIGHT: 16,
     FRAMEWIDTH: 16,
-    FRAMEHEIGHT: 16,
+    FRAMEHEIGHT: 16
   },
   FUEL: {
     IMAGE: 'fuel-32x32',
@@ -83,5 +83,33 @@ CONFIG = {
     WIDTH: 480,
     HEIGHT: 800
   },
-  SCORES: {}
+  SCORES: {},
+  BOTS: {
+    HUMAN: 'human',
+    RANDOM: 'random'
+  },
+  RECEIVED_MESSAGES: {
+    MOVELEFT: 'moveleft',
+    MOVERIGHT: 'moveright',
+    RELEASERIGHT: 'releaseright',
+    RELEASELEFT: 'releaseleft',
+    GETPLAYERPOS: 'getplayerpos',
+    HANDSHAKE: 'handshake',
+    WHICHBOT: 'whichbot',
+    BOTCREATED: 'botcreated',
+    GETGAMESTATE: 'getgamestate',
+    GETBOARD: 'getboard'
+  },
+  SENT_MESSAGES: {
+    PRESSEDLEFTKEY: 'pressedLeftKey',
+    RELEASEDLEFTKEY: 'releasedLeftKey',
+    PRESSEDRIGHTKEY: 'pressedRightKey',
+    RELEASEDRIGHTKEY: 'releasedRightKey',
+    PLAYERPOS: 'playerpos',
+    HANDSHAKE: 'handshake',
+    BOT: 'bot',
+    IDLE: 'idle',
+    GAMESTATE: 'gamestate',
+    GAMEOVER: 'gameover'
+  }
 };

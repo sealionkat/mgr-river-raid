@@ -20,50 +20,52 @@ me.Botapi = me.Object.extend({
 
     this.ws.onmessage = function (event) {
       switch (event.data) {
-        case 'moveleft':
+        case CONFIG.RECEIVED_MESSAGES.MOVELEFT:
           that.pressLeftKey();
-          that.sendStringMessage({type: 'pressedLeftKey', data: null});
+          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.PRESSEDLEFTKEY, data: null});
           break;
-        case 'releaseleft':
+        case CONFIG.RECEIVED_MESSAGES.RELEASELEFT:
           that.releaseLeftKey();
-          that.sendStringMessage({type: 'releasedLeftKey', data: null});
+          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.RELEASEDLEFTKEY, data: null});
           break;
-        case 'moveright':
+        case CONFIG.RECEIVED_MESSAGES.MOVERIGHT:
           that.pressRightKey();
-          that.sendStringMessage({type: 'pressedRightKey', data: null});
+          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.PRESSEDRIGHTKEY, data: null});
           break;
-        case 'releaseright':
+        case CONFIG.RECEIVED_MESSAGES.RELEASERIGHT:
           that.releaseRightKey();
-          that.sendStringMessage({type: 'releasedRightKey', data: null});
+          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.RELEASEDRIGHTKEY, data: null});
           break;
-        case 'getplayerpos':
-          that.sendStringMessage({type: 'playerpos', data: that.getPlayerPos()});
+        case CONFIG.RECEIVED_MESSAGES.GETPLAYERPOS:
+          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.PLAYERPOS, data: that.getPlayerPos()});
           break;
-        case 'handshake':
-          that.sendStringMessage({type: 'handshake', data: null});
+        case CONFIG.RECEIVED_MESSAGES.HANDSHAKE:
+          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.HANDSHAKE, data: null});
           break;
-        case 'whichbot':
-          that.sendStringMessage({type: 'bot', data: 'random'});
+        case CONFIG.RECEIVED_MESSAGES.WHICHBOT:
+          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.BOT, data: 'random'});
           break;
-        case 'botcreated':
+        case CONFIG.RECEIVED_MESSAGES.BOTCREATED:
           that.initBoard();
           that.sendStringMessage({
-            type: 'idle', data: {
-              boardSizes: [0, 0, 480, 800],
+            type: CONFIG.SENT_MESSAGES.IDLE,
+            data: {
+              boardSizes: [0, 0, CONFIG.BACKGROUND.WIDTH, CONFIG.BACKGROUND.HEIGHT],
               groundWidth: game.data.groundWidth,
               playerPos: that.getPlayerPos()
             }
           });
           break;
-        case 'getgamestate':
+        case CONFIG.RECEIVED_MESSAGES.GETGAMESTATE:
           that.sendStringMessage({
-            type: 'gamestate', data: {
+            type: CONFIG.SENT_MESSAGES.GAMESTATE,
+            data: {
               playerPos: that.getPlayerPos(),
               gameObjects: that.getGameObjects()
             }
           });
           break;
-        case 'getboard':
+        case CONFIG.RECEIVED_MESSAGES.GETBOARD:
           that.sendBinaryMessage(that.getBoard().data);
           break;
         default:
@@ -81,23 +83,23 @@ me.Botapi = me.Object.extend({
     return deferred.promise;
   },
   sendGameOver: function () {
-    this.sendStringMessage({type: 'gameover', data: null});
+    this.sendStringMessage({type: CONFIG.SENT_MESSAGES.GAMEOVER, data: null});
   },
   getPlayerPos: function () {
     return game.data.playerPos;
   },
   getBoard: function () {
-    return this.board.getImageData(0, 0, 480, 800);
+    return this.board.getImageData(0, 0, CONFIG.BACKGROUND.WIDTH, CONFIG.BACKGROUND.HEIGHT);
   },
   getGameObjects: function () {
     var objects = _.cloneDeep(me.game.world.children);
     var filteredObjects = [];
     objects = objects.filter(function (item) {
       switch (item.type) {
-        case 'enemy':
-        case 'bulletP':
-        case 'bulletE':
-        case 'fuel':
+        case CONFIG.NAMES.ENEMY:
+        case CONFIG.NAMES.BULLETP:
+        case CONFIG.NAMES.BULLETE:
+        case CONFIG.NAMES.FUEL:
           return true;
         default:
           return false;
@@ -112,7 +114,6 @@ me.Botapi = me.Object.extend({
     return filteredObjects;
   },
   pressLeftKey: function () {
-    console.warn('invoked pressleft', this);
     me.input.triggerKeyEvent(me.input.KEY.LEFT, true);
     this.pressedKey = me.input.KEY.LEFT;
   },

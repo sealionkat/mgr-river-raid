@@ -6,8 +6,8 @@ game.HUD.Container = me.Container.extend({
     this._super(me.Container, 'init');
     this.isPersistent = true;
     this.floating = true;
-    this.name = 'HUD';
-    this.type = 'hud';
+    this.name = CONFIG.NAMES.HUD;
+    this.type = CONFIG.NAMES.HUD;
     this.addChild(new game.HUD.ScoreItem(5, 5));
   }
 });
@@ -31,5 +31,4 @@ game.HUD.ScoreItem = me.Renderable.extend({
     this.font.draw(context, 'Score: ' + game.data.score, this.pos.x, this.pos.y);
     this.font.draw(context, 'Fuel: ' + game.data.fuel, this.pos.x, this.pos.y + 25);
   }
-
 });
