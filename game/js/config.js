@@ -15,7 +15,8 @@ CONFIG = {
     BULLETP: 'bulletP',
     BULLETE: 'bulletE',
     FUEL: 'fuel',
-    ENEMY: 'enemy'
+    ENEMY: 'enemy',
+    HUD: 'HUD'
   },
   PLAYER: {
     IMAGE: 'player-32x32',
@@ -26,9 +27,15 @@ CONFIG = {
     SPEED: 2.0
   },
   BULLETP: {
-    WIDTH: 8,
+    IMAGE: 'bulletP-16x16',
+    WIDTH: 16,
     HEIGHT: 16,
-    FREQUENCY: 75
+    FRAMEWIDTH: 16,
+    FRAMEHEIGHT: 16,
+    SPEEDX: 0,
+    SPEEDY: -2,
+    FREQUENCY: 75,
+    WORTH: 50
   },
   ENEMYV: {
     IMAGE: 'enemy1-32x32',
@@ -53,16 +60,28 @@ CONFIG = {
     WORTH: 50
   },
   BULLETE: {
-
+    IMAGE: 'bulletE-16x16',
+    WIDTH: 16,
+    HEIGHT: 16,
+    FRAMEWIDTH: 16,
+    FRAMEHEIGHT: 16,
   },
   FUEL: {
+    IMAGE: 'fuel-32x32',
+    WIDTH: 32,
+    HEIGHT: 32,
+    FRAMEWIDTH: 32,
+    FRAMEHEIGHT: 32,
+    SPEEDX: 0,
+    SPEEDY: 1,
+    FREQUENCY: 800,
     LOSS: 1,
     MIN: 0
   },
   BACKGROUND: {
-
+    IMAGE: 'bgb-480x800',
+    WIDTH: 480,
+    HEIGHT: 800
   },
-  SCORES: {
-
-  }
+  SCORES: {}
 };

@@ -40,8 +40,8 @@ game.PlayerEntity = me.Entity.extend({
       me.state.change(me.state.GAMEOVER);
     }
 
-    if (this.generateB++ % this.frequencyBullet == 0) {
-      var bullet = new me.pool.pull(CONFIG.NAMES.BULLETP, this.pos.x + CONFIG.BULLETP.WIDTH, this.pos.y - CONFIG.BULLETP.HEIGHT);
+    if (this.generateB++ % this.frequencyBullet === 0) {
+      var bullet = new me.pool.pull(CONFIG.NAMES.BULLETP, this.pos.x + CONFIG.BULLETP.WIDTH / 2, this.pos.y - CONFIG.BULLETP.HEIGHT);
       me.game.world.addChild(bullet, 11);
     }
 
@@ -100,9 +100,9 @@ game.EnemyVEntity = me.Entity.extend({
       this.ancestor.removeChild(this);
     }
 
-    if (this.generate++ % this.frequency == 0) {
+    if (this.generate++ % this.frequency === 0) {
       var bullet = new me.pool.pull(CONFIG.NAMES.BULLETE, this.pos.x + 8, this.pos.y + 32);
-      var diffPos = this.pos.x - game.data.playerPos.x; //todo
+      var diffPos = this.pos.x - game.data.playerPos.x;
       if (diffPos > 0) {
         bullet.body.vel.set(-1, 3);
       } else if (diffPos < 0) {
@@ -120,21 +120,21 @@ game.EnemyVEntity = me.Entity.extend({
     return true;
   },
   shouldCollide: function (a, b) {
-    if (b.type == 'enemy' && a.type == 'enemy') {
+    if (b.type === CONFIG.NAMES.ENEMY && a.type === CONFIG.NAMES.ENEMY) {
       return false;
     }
   },
   onCollision: function (response) {
     var secondObj = response.b;
 
-    if (secondObj.type == 'enemy' || secondObj.type == 'bulletE') {
+    if (secondObj.type === CONFIG.NAMES.ENEMY || secondObj.type === CONFIG.NAMES.BULLETE) {
       return false;
     }
 
-    if (secondObj.type == 'bulletP') {
+    if (secondObj.type === CONFIG.NAMES.BULLETP) {
       this.collided = true;
       console.log('enemy shot');
-      game.data.score += 50;
+      game.data.score += CONFIG.ENEMYV.WORTH;
       secondObj.ancestor.removeChild(secondObj);
       this.ancestor.removeChild(this);
     }
@@ -168,9 +168,9 @@ game.EnemyHEntity = me.Entity.extend({
       this.ancestor.removeChild(this);
     }
 
-    if (this.generate++ % this.frequency == 0) {
-      var bullet = new me.pool.pull(CONFIG.NAMES.BULLETE, this.pos.x + 8, this.pos.y + 32);
-      var diffPos = this.pos.x - game.data.playerPos.x; //todo
+    if (this.generate++ % this.frequency === 0) {
+      var bullet = new me.pool.pull(CONFIG.NAMES.BULLETE, this.pos.x + CONFIG.BULLETE.WIDTH / 2, this.pos.y + CONFIG.BULLETE.HEIGHT);
+      var diffPos = this.pos.x - game.data.playerPos.x;
 
       if (diffPos > 0) {
         bullet.body.vel.set(-1, 2);
@@ -190,21 +190,21 @@ game.EnemyHEntity = me.Entity.extend({
     return true;
   },
   shouldCollide: function (a, b) {
-    if (b.type == 'enemy' && a.type == 'enemy') {
+    if (b.type === CONFIG.NAMES.ENEMY && a.type === CONFIG.NAMES.ENEMY) {
       return false;
     }
   },
   onCollision: function (response) {
     var secondObj = response.b;
 
-    if (secondObj.type == 'enemy' || secondObj.type == 'bulletE') {
+    if (secondObj.type === CONFIG.NAMES.ENEMY || secondObj.type === CONFIG.NAMES.BULLETE) {
       return false;
     }
 
-    if (secondObj.type == 'bulletP') {
+    if (secondObj.type === CONFIG.NAMES.BULLETP) {
       this.collided = true;
       console.log('enemy shot');
-      game.data.score += 50;
+      game.data.score += CONFIG.ENEMYH.WORTH;
       secondObj.ancestor.removeChild(secondObj);
       this.ancestor.removeChild(this);
     }
@@ -215,18 +215,18 @@ game.EnemyHEntity = me.Entity.extend({
 game.BulletPEntity = me.Entity.extend({
   init: function (x, y) {
     var settings = {};
-    settings.image = me.loader.getImage('bulletP-16x16');
-    settings.width = 16;
-    settings.height = 16;
-    settings.framewidth = 16;
-    settings.frameheight = 16;
+    settings.image = me.loader.getImage(CONFIG.BULLETP.IMAGE);
+    settings.width = CONFIG.BULLETP.WIDTH;
+    settings.height = CONFIG.BULLETP.HEIGHT;
+    settings.framewidth = CONFIG.BULLETP.FRAMEWIDTH;
+    settings.frameheight = CONFIG.BULLETP.FRAMEHEIGHT;
 
     this._super(me.Entity, 'init', [x, y, settings]);
-    this.body.vel.set(0, -2);
+    this.body.vel.set(CONFIG.BULLETP.SPEEDX, CONFIG.BULLETP.SPEEDY);
     this.alwaysUpdate = true;
     this.collided = false;
 
-    this.type = 'bulletP';
+    this.type = CONFIG.NAMES.BULLETP;
   },
   update: function (dt) {
     this.pos.add(this.body.vel);
@@ -243,17 +243,17 @@ game.BulletPEntity = me.Entity.extend({
 game.BulletEEntity = me.Entity.extend({
   init: function (x, y) {
     var settings = {};
-    settings.image = me.loader.getImage('bulletE-16x16');
-    settings.width = 16;
-    settings.height = 16;
-    settings.framewidth = 16;
-    settings.frameheight = 16;
+    settings.image = me.loader.getImage(CONFIG.BULLETE.IMAGE);
+    settings.width = CONFIG.BULLETE.WIDTH;
+    settings.height = CONFIG.BULLETE.HEIGHT;
+    settings.framewidth = CONFIG.BULLETE.FRAMEWIDTH;
+    settings.frameheight = CONFIG.BULLETE.FRAMEHEIGHT;
 
     this._super(me.Entity, 'init', [x, y, settings]);
     this.alwaysUpdate = true;
     this.collided = false;
 
-    this.type = 'bulletE';
+    this.type = CONFIG.NAMES.BULLETE;
   },
   update: function (dt) {
     this.pos.add(this.body.vel);
@@ -271,17 +271,17 @@ game.BulletEEntity = me.Entity.extend({
 game.FuelEntity = me.Entity.extend({
   init: function (x, y) {
     var settings = {};
-    settings.image = this.image = me.loader.getImage('fuel-32x32');
-    settings.width = 32;
-    settings.height = 32;
-    settings.framewidth = 32;
-    settings.frameheight = 32;
+    settings.image = this.image = me.loader.getImage(CONFIG.FUEL.IMAGE);
+    settings.width = CONFIG.FUEL.WIDTH;
+    settings.height = CONFIG.FUEL.HEIGHT;
+    settings.framewidth = CONFIG.FUEL.FRAMEWIDTH;
+    settings.frameheight = CONFIG.FUEL.FRAMEHEIGHT;
 
     this._super(me.Entity, 'init', [x, y, settings]);
     this.alwaysUpdate = true;
 
-    this.body.vel.set(0, 1);
-    this.type = 'fuel';
+    this.body.vel.set(CONFIG.FUEL.SPEEDX, CONFIG.FUEL.SPEEDY);
+    this.type = CONFIG.NAMES.FUEL;
   },
   update: function (dt) {
     this.pos.add(this.body.vel);
@@ -307,14 +307,14 @@ game.EnemiesGenerator = me.Renderable.extend({
     this.frequencyH = 500;
   },
   update: function (dt) {
-    if (this.generateV++ % this.frequencyV == 0) {
-      var posX = Number.prototype.random(game.data.groundWidth, game.data.width - game.data.groundWidth - 32);
-      var enemy = new me.pool.pull('enemyV', posX, 0);
+    if (this.generateV++ % this.frequencyV === 0) {
+      var posX = Number.prototype.random(game.data.groundWidth, game.data.width - game.data.groundWidth - CONFIG.ENEMYV.WIDTH);
+      var enemy = new me.pool.pull(CONFIG.NAMES.ENEMYV, posX, 0);
       me.game.world.addChild(enemy, 11);
     }
 
-    if (this.generateH++ % this.frequencyH == 0) {
-      var enemy = new me.pool.pull('enemyH', game.data.width - game.data.groundWidth - 32, 0);
+    if (this.generateH++ % this.frequencyH === 0) {
+      var enemy = new me.pool.pull(CONFIG.NAMES.ENEMYH, game.data.width - game.data.groundWidth - CONFIG.ENEMYH.WIDTH, 0);
       me.game.world.addChild(enemy, 10);
     }
 
@@ -329,12 +329,12 @@ game.FuelGenerator = me.Renderable.extend({
     this._super(me.Renderable, 'init', [0, 0, me.game.viewport.width, me.game.viewport.height]);
     this.alwaysUpdate = true;
     this.generate = 1;
-    this.frequency = 800;
+    this.frequency = CONFIG.FUEL.FREQUENCY;
   },
   update: function (dt) {
-    if (this.generate++ % this.frequency == 0) {
+    if (this.generate++ % this.frequency === 0) {
       var posX = Number.prototype.random(game.data.groundWidth, game.data.width - game.data.groundWidth - 32);
-      var fuel = new me.pool.pull('fuel', posX, 0);
+      var fuel = new me.pool.pull(CONFIG.NAMES.FUEL, posX, 0);
       console.log('fuel added');
       me.game.world.addChild(fuel, 11);
     }

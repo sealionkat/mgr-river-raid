@@ -11,7 +11,7 @@ game.PlayScreen = me.ScreenObject.extend({
 		};
 
 		var background = new me.Sprite(0, 0, {
-			image: me.loader.getImage('bgb-480x800'),
+			image: me.loader.getImage(CONFIG.BACKGROUND.IMAGE),
 			anchorPoint: {x: 0, y: 0}
 		});
 		me.game.world.addChild(background, 1);
