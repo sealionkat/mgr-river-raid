@@ -9,7 +9,7 @@ var game = {
     groundWidth: CONFIG.INIT.GROUNDWIDTH
   },
   onload: function () {
-    if (!me.video.init(CONFIG.INIT.WIDTH, CONFIG.INIT.HEIGHT, {wrapper: 'screen', scale: 'auto'})) {
+    if (!me.video.init(CONFIG.INIT.WIDTH, CONFIG.INIT.HEIGHT, {wrapper: 'screen', scale: 'auto', antiAlias: true})) {
       alert('Your browser does not support HTML5 canvas.');
 
       return;
