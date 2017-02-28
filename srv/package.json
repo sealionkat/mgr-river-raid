@@ -9,6 +9,9 @@
   },
   "author": "sealionkat",
   "license": "GPL-3.0",
+  "dependencies": {
+    "reinforcejs": "sealionkat/reinforcejs"
+  },
   "devDependencies": {
     "websocket": "^1.0.24"
   }
