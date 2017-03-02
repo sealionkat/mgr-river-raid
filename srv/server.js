@@ -1,6 +1,7 @@
 const WebSocketServer = require('websocket').server;
 const http = require('http');
 const RandomBot = require('./bots/randomBot');
+const RlBot = require('./bots/rlBot');
 const {RECEIVED_MESSAGES, SENT_MESSAGES} = require('./messagesTypes');
 const CONFIG = require('./config');
 
@@ -53,6 +54,16 @@ wsServer.on('request', function(request) {
         case RECEIVED_MESSAGES.BOT:
           console.log('bot!');
           bot = new RandomBot();
+          switch(data.data) {
+            case 'random':
+              bot = new RandomBot();
+              break;
+            case 'rl':
+              bot = new RlBot();
+              break;
+            default:
+              console.log('unknown bot', data.data);
+          }
           connection.sendUTF(SENT_MESSAGES.BOTCREATED);
           break;
         case RECEIVED_MESSAGES.IDLE:
