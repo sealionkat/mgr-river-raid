@@ -1,4 +1,7 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
   "rules": {
     "no-multi-spaces": "error",
     "no-dupe-args": "error",
@@ -30,7 +33,6 @@
     "no-undef-init": "error",
     "no-undefined": "error",
     "no-unused-vars": "error",
-
     "array-bracket-spacing": ["error", "never"],
     "block-spacing": "error",
     "brace-style": "error",
