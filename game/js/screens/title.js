@@ -19,11 +19,15 @@ game.TitleScreen = me.ScreenObject.extend({
         draw: function(renderer) {
           this.font.draw(renderer, 'Human play - press 1', 100, 240);
           this.font.draw(renderer, 'Simple bot play - press 2', 100, 280);
+          this.font.draw(renderer, 'Reinforcement Learning bot - press 3', 100, 320);
+          this.font.draw(renderer, 'RL bot (learning mode) - press 4', 100, 360);
         }
       })), 2);
 
       me.input.bindKey(me.input.KEY.NUM1, 'human', true);
       me.input.bindKey(me.input.KEY.NUM2, 'simple', true);
+      me.input.bindKey(me.input.KEY.NUM3, 'rlbot', true);
+      me.input.bindKey(me.input.KEY.NUM4, 'rllearn', true);
 
       this.handler = me.event.subscribe(me.event.KEYDOWN, function(action, keyCode, edge) {
         if(action === 'human') {
@@ -31,10 +35,28 @@ game.TitleScreen = me.ScreenObject.extend({
         } else if(action === 'simple') {
           me.game.bot = new me.Botapi();
 
-          me.game.bot.initWebSockets().then(function() {
+          me.game.bot.initWebSockets({bot: 'random'}).then(function() {
             console.log('Initialized WebSockets');
             me.state.change(me.state.PLAY);
           });
+        } else if(action === 'rlbot') {
+          me.game.bot = new me.Botapi();
+          console.log('rlbot once')
+
+          me.game.bot.initWebSockets({bot: 'rl'}).then(function() {
+            console.log('WebSocket + reinforcement learning bot');
+
+          });
+
+        } else if(action === 'rllearn') {
+          me.game.bot = new me.Botapi();
+          console.log('rlbot learning');
+
+          if(!me.game.bot.isWebSocketOpen()) {
+            me.game.bot.initWebSockets({bot: 'rlc'}).then(function() {
+              console.log('Initaliazed WebSockets');
+            });
+          }
         }
       });
     },

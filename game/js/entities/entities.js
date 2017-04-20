@@ -344,3 +344,27 @@ game.FuelGenerator = me.Renderable.extend({
     return true;
   }
 });
+
+game.Sensor = me.Entity.extend({
+  init: function(x, y, points) {
+    var settings = {};
+
+    this._super(me.Entity, 'init', [x, y, points]);
+
+    this.alwaysUpdate = true;
+    this.body.vel.set(0, CONFIG.PLAYER.SPEEDY);
+    this.type = CONFIG.NAMES.SENSOR;
+  },
+  update: function(dt) {
+    this.pos.add(this.body.vel);
+
+    this._super(me.Entity, 'update', [dt]);
+
+    return true;
+  },
+  onCollision: function (response) {
+    var secondObj = response.b;
+
+    console.log('sensor collided');
+  }
+});

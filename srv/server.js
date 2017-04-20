@@ -52,14 +52,18 @@ wsServer.on('request', function(request) {
           connection.sendUTF(SENT_MESSAGES.WHICHBOT);
           break;
         case RECEIVED_MESSAGES.BOT:
-          console.log('bot!');
+          console.log('bot!', data.data);
           bot = new RandomBot();
           switch(data.data) {
             case 'random':
               bot = new RandomBot();
               break;
             case 'rl':
+              console.log('rl')
               bot = new RlBot();
+              break;
+            case 'rlc':
+              // todo: use existing rlbot or create new
               break;
             default:
               console.log('unknown bot', data.data);

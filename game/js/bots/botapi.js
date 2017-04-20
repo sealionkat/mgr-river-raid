@@ -5,7 +5,7 @@ me.Botapi = me.Object.extend({
   initBoard: function () {
     this.board = me.video.renderer.getContext2d(me.video.renderer.canvas);
   },
-  initWebSockets: function () {
+  initWebSockets: function (botOptions) {
     var deferred = Q.defer();
     var that = this;
     console.log('Creating WebSocket client');
@@ -43,7 +43,7 @@ me.Botapi = me.Object.extend({
           that.sendStringMessage({type: CONFIG.SENT_MESSAGES.HANDSHAKE, data: null});
           break;
         case CONFIG.RECEIVED_MESSAGES.WHICHBOT:
-          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.BOT, data: 'random'});
+          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.BOT, data: botOptions.bot});
           break;
         case CONFIG.RECEIVED_MESSAGES.BOTCREATED:
           that.initBoard();
@@ -81,6 +81,9 @@ me.Botapi = me.Object.extend({
     };
 
     return deferred.promise;
+  },
+  isWebSocketOpen: function() {
+    return typeof this.ws !== 'undefined' && this.ws !== null;
   },
   sendGameOver: function () {
     this.sendStringMessage({type: CONFIG.SENT_MESSAGES.GAMEOVER, data: null});

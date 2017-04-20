@@ -8,7 +8,14 @@ class RlBot extends Bot {
     super();
 
     this.pressedKey = null;
-    super.sayHello('Reiforcement Learning Bot');
+    this.sensorsNo = 17;
+    this.sensorLen = 100;
+    this.sensorDimensionality = 5;
+    this.rlEnv = new RlEnv();
+    this.agent = new RL.DQNAgent(this.rlEnv.env, this.rlEnv.spec);
+
+    this.sensors = [];
+    super.sayHello('Reinforcement Learning Bot');
   }
 
   getBotConfig() {
@@ -22,6 +29,17 @@ class RlBot extends Bot {
   }
 
   firstStepMessage() {
+
+  }
+  exportData() {
+
+  }
+
+  importData() {
+
+  }
+
+  computeSensorFeedback(gameObjects) {
 
   }
 }
