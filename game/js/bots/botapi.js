@@ -61,7 +61,9 @@ me.Botapi = me.Object.extend({
             type: CONFIG.SENT_MESSAGES.GAMESTATE,
             data: {
               playerPos: that.getPlayerPos(),
-              gameObjects: that.getGameObjects()
+              gameObjects: that.getGameObjects(),
+              playerVel: that.getPlayerVel(),
+              fuel: that.getFuel()
             }
           });
           break;
@@ -91,6 +93,12 @@ me.Botapi = me.Object.extend({
   getPlayerPos: function () {
     return game.data.playerPos;
   },
+  getPlayerVel: function() {
+    return game.data.playerVel || 0;
+  },
+  getFuel: function() {
+    return game.data.fuel || 0;
+  },
   getBoard: function () {
     return this.board.getImageData(0, 0, CONFIG.BACKGROUND.WIDTH, CONFIG.BACKGROUND.HEIGHT);
   },
@@ -111,25 +119,29 @@ me.Botapi = me.Object.extend({
 
     for (var i = 0, iss = objects.length; i < iss; ++i) {
       var obj = objects[i];
-      filteredObjects.push(_.pick(obj, ['pos', 'type', 'name']));
+      filteredObjects.push(_.pick(obj, ['pos', 'type', 'name', 'body.vel']));
     }
 
     return filteredObjects;
   },
   pressLeftKey: function () {
     me.input.triggerKeyEvent(me.input.KEY.LEFT, true);
+    game.data.playerVel = -1;
     this.pressedKey = me.input.KEY.LEFT;
   },
   pressRightKey: function () {
     me.input.triggerKeyEvent(me.input.KEY.RIGHT, true);
+    game.data.playerVel = 1;
     this.pressedKey = me.input.KEY.RIGHT;
   },
   releaseLeftKey: function () {
     me.input.triggerKeyEvent(me.input.KEY.LEFT, false);
+    game.data.playerVel = 0;
     this.pressedKey = null;
   },
   releaseRightKey: function () {
     me.input.triggerKeyEvent(me.input.KEY.RIGHT, false);
+    game.data.playerVel = 0;
     this.pressedKey = null;
   },
   sendStringMessage: function(msg) {

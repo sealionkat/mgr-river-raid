@@ -46,6 +46,7 @@ game.TitleScreen = me.ScreenObject.extend({
           me.game.bot.initWebSockets({bot: 'rl'}).then(function() {
             console.log('WebSocket + reinforcement learning bot');
 
+            me.state.change(me.state.PLAY);
           });
 
         } else if(action === 'rllearn') {
