@@ -52,7 +52,10 @@ me.Botapi = me.Object.extend({
             data: {
               boardSizes: [0, 0, CONFIG.BACKGROUND.WIDTH, CONFIG.BACKGROUND.HEIGHT],
               groundWidth: game.data.groundWidth,
-              playerPos: that.getPlayerPos()
+              playerPos: that.getPlayerPos(),
+              gameObjects: that.getGameObjects(),
+              playerVel: that.getPlayerVel(),
+              fuel: that.getFuel()
             }
           });
           break;
