@@ -102,13 +102,15 @@ CONFIG = {
     WHICHBOT: 'whichbot',
     BOTCREATED: 'botcreated',
     GETGAMESTATE: 'getgamestate',
-    GETBOARD: 'getboard'
+    GETBOARD: 'getboard',
+    RELEASEARROWKEY: 'releasearrowkey'
   },
   SENT_MESSAGES: {
     PRESSEDLEFTKEY: 'pressedLeftKey',
     RELEASEDLEFTKEY: 'releasedLeftKey',
     PRESSEDRIGHTKEY: 'pressedRightKey',
     RELEASEDRIGHTKEY: 'releasedRightKey',
+    RELEASEDARROWKEY: 'releasedArrowKey',
     PLAYERPOS: 'playerpos',
     HANDSHAKE: 'handshake',
     BOT: 'bot',
