@@ -116,6 +116,7 @@ CONFIG = {
     BOT: 'bot',
     IDLE: 'idle',
     GAMESTATE: 'gamestate',
-    GAMEOVER: 'gameover'
+    GAMEOVER: 'gameover',
+    REPLAY: 'replay'
   }
 };

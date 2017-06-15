@@ -15,6 +15,7 @@ me.Botapi = me.Object.extend({
     this.ws = new WebSocket('ws://localhost:8081', 'echo-protocol');
     this.ws.onopen = function () {
       console.log('Bot connected to WebSocket server');
+      that.botType = botOptions.bot;
       deferred.resolve();
     };
 
@@ -130,6 +131,9 @@ me.Botapi = me.Object.extend({
   },
   sendGameOver: function () {
     this.sendStringMessage({type: CONFIG.SENT_MESSAGES.GAMEOVER, data: null});
+  },
+  sendReplay: function () {
+    this.sendStringMessage({type: CONFIG.SENT_MESSAGES.REPLAY, data: null});
   },
   getPlayerPos: function () {
     return game.data.playerPos;

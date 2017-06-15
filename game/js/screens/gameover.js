@@ -22,6 +22,22 @@ game.GameoverScreen = me.ScreenObject.extend({
       }
     })), 2);
 
+    if (me.game.bot.botType === 'rlc') { // it's learning mode
+      me.game.bot = new me.Botapi();
+      console.log('rlbot learning');
+
+      if(!me.game.bot.isWebSocketOpen()) {
+        me.game.bot.initWebSockets({bot: 'rlc'}).then(function() {
+          console.log('WebSocket + reinforcement learning bot + learning mode');
+
+          me.state.change(me.state.PLAY);
+        });
+      } else {
+        me.game.bot.sendReplay();
+        me.state.change(me.state.PLAY);
+      }
+    }
+
     me.input.bindKey(me.input.KEY.ENTER, 'title', true);
 
     this.handler = me.event.subscribe(me.event.KEYDOWN, function (action, keyCode, edge) {
