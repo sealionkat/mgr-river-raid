@@ -4,7 +4,11 @@
   "main": "main.js",
   "private": true,
   "author": "sealionkat",
+  "scripts": {
+    "lint": "node ./node_modules/eslint/bin/eslint.js -c .eslintrc *.js **/*.js"
+  },
   "devDependencies": {
+    "eslint": "^4.0.0",
     "grunt": "^0.4.5",
     "grunt-asar": "bwin/grunt-asar#update-asar",
     "grunt-contrib-clean": "^0.7.0",
