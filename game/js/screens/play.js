@@ -31,6 +31,9 @@ game.PlayScreen = me.ScreenObject.extend({
 	},
 	onDestroyEvent: function() {
 		me.game.world.removeChild(this.HUD);
+		me.game.world.removeChild(this.plane);
+		me.game.world.removeChild(this.enemyGenerator);
+		me.game.world.removeChild(this.fuelGenerator);
 
 		if (typeof me.game.bot !== 'undefined') {
 			me.game.bot.sendGameOver();
