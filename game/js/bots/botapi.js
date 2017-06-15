@@ -12,9 +12,10 @@ me.Botapi = me.Object.extend({
 
     this.parseMessage = this.parseMessage.bind(this);
 
+
     this.ws = new WebSocket('ws://localhost:8081', 'echo-protocol');
     this.ws.onopen = function () {
-      console.log('Bot connected to WebSocket server');
+      console.warn('Bot connected to WebSocket server');
       that.botType = botOptions.bot;
       deferred.resolve();
     };
@@ -31,60 +32,71 @@ me.Botapi = me.Object.extend({
               gameObjects: that.getGameObjects(),
               playerVel: that.getPlayerVel(),
               fuel: that.getFuel()
-            }});
+            }
+          });
           break;
         case CONFIG.RECEIVED_MESSAGES.RELEASELEFT:
           that.releaseLeftKey();
-          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.RELEASEDLEFTKEY,
+          that.sendStringMessage({
+            type: CONFIG.SENT_MESSAGES.RELEASEDLEFTKEY,
             data: {
               playerPos: that.getPlayerPos(),
               gameObjects: that.getGameObjects(),
               playerVel: that.getPlayerVel(),
               fuel: that.getFuel()
-            }});
+            }
+          });
           break;
         case CONFIG.RECEIVED_MESSAGES.MOVERIGHT:
           console.log('move right');
           that.pressRightKey();
-          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.PRESSEDRIGHTKEY,
+          that.sendStringMessage({
+            type: CONFIG.SENT_MESSAGES.PRESSEDRIGHTKEY,
             data: {
               playerPos: that.getPlayerPos(),
               gameObjects: that.getGameObjects(),
               playerVel: that.getPlayerVel(),
               fuel: that.getFuel()
-            }});
+            }
+          });
           break;
         case CONFIG.RECEIVED_MESSAGES.RELEASERIGHT:
           that.releaseRightKey();
-          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.RELEASEDRIGHTKEY,
+          that.sendStringMessage({
+            type: CONFIG.SENT_MESSAGES.RELEASEDRIGHTKEY,
             data: {
               playerPos: that.getPlayerPos(),
               gameObjects: that.getGameObjects(),
               playerVel: that.getPlayerVel(),
               fuel: that.getFuel()
-          }});
+            }
+          });
           break;
         case CONFIG.RECEIVED_MESSAGES.RELEASEARROWKEY:
           console.log('release arrow');
           that.releaseArrowKey();
-          that.sendStringMessage({type: CONFIG.SENT_MESSAGES.RELEASEDARROWKEY,
+          that.sendStringMessage({
+            type: CONFIG.SENT_MESSAGES.RELEASEDARROWKEY,
             data: {
               playerPos: that.getPlayerPos(),
               gameObjects: that.getGameObjects(),
               playerVel: that.getPlayerVel(),
               fuel: that.getFuel()
-            }});
+            }
+          });
           break;
         case CONFIG.RECEIVED_MESSAGES.GETPLAYERPOS:
           that.sendStringMessage({type: CONFIG.SENT_MESSAGES.PLAYERPOS, data: that.getPlayerPos()});
           break;
         case CONFIG.RECEIVED_MESSAGES.HANDSHAKE:
+          console.log('Handshake');
           that.sendStringMessage({type: CONFIG.SENT_MESSAGES.HANDSHAKE, data: null});
           break;
         case CONFIG.RECEIVED_MESSAGES.WHICHBOT:
           that.sendStringMessage({type: CONFIG.SENT_MESSAGES.BOT, data: botOptions.bot});
           break;
         case CONFIG.RECEIVED_MESSAGES.BOTCREATED:
+          console.log('Botcreated');
           that.initBoard();
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.IDLE,
@@ -99,6 +111,7 @@ me.Botapi = me.Object.extend({
           });
           break;
         case CONFIG.RECEIVED_MESSAGES.GETGAMESTATE:
+          console.log('Get game state');
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.GAMESTATE,
             data: {
@@ -126,7 +139,7 @@ me.Botapi = me.Object.extend({
 
     return deferred.promise;
   },
-  isWebSocketOpen: function() {
+  isWebSocketOpen: function () {
     return typeof this.ws !== 'undefined' && this.ws !== null;
   },
   sendGameOver: function () {
@@ -138,10 +151,10 @@ me.Botapi = me.Object.extend({
   getPlayerPos: function () {
     return game.data.playerPos;
   },
-  getPlayerVel: function() {
+  getPlayerVel: function () {
     return game.data.playerVel || 0;
   },
-  getFuel: function() {
+  getFuel: function () {
     return game.data.fuel || 0;
   },
   getBoard: function () {
@@ -201,10 +214,10 @@ me.Botapi = me.Object.extend({
       this.releaseRightKey();
     }
   },
-  sendStringMessage: function(msg) {
+  sendStringMessage: function (msg) {
     this.ws.send(JSON.stringify(msg))
   },
-  sendBinaryMessage: function(msg) {
+  sendBinaryMessage: function (msg) {
     this.ws.send(msg);
   },
   parseMessage: function (event) {

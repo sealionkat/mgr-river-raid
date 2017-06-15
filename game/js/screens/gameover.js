@@ -23,16 +23,16 @@ game.GameoverScreen = me.ScreenObject.extend({
     })), 2);
 
     if (me.game.bot.botType === 'rlc') { // it's learning mode
-      me.game.bot = new me.Botapi();
-      console.log('rlbot learning');
-
       if(!me.game.bot.isWebSocketOpen()) {
+        me.game.bot = new me.Botapi();
+        console.log('rlbot learning');
         me.game.bot.initWebSockets({bot: 'rlc'}).then(function() {
           console.log('WebSocket + reinforcement learning bot + learning mode');
 
           me.state.change(me.state.PLAY);
         });
       } else {
+        console.warn('send replay');
         me.game.bot.sendReplay();
         me.state.change(me.state.PLAY);
       }
