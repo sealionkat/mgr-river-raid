@@ -177,7 +177,17 @@ me.Botapi = me.Object.extend({
 
     for (var i = 0, iss = objects.length; i < iss; ++i) {
       var obj = objects[i];
-      filteredObjects.push(_.pick(obj, ['pos', 'type', 'body.vel', 'width', 'height']));
+      var pickedObj = _.pick(obj, ['pos', 'type', 'body.vel', 'width', 'height']);
+      filteredObjects.push({
+        type: pickedObj.type,
+        vel: pickedObj.body.vel,
+        width: pickedObj.width,
+        height: pickedObj.height,
+        pos: {
+          x: pickedObj.pos._x,
+          y: pickedObj.pos._y
+        }
+      });
     }
 
     return filteredObjects;
