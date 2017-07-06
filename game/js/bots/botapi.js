@@ -172,16 +172,13 @@ me.Botapi = me.Object.extend({
     return filteredObjects;
   },
   pressLeftKey: function () {
-    if (this.pressedKey === me.input.KEY.LEFT) {
-      this.releaseLeftKey();
-    } else if (this.pressedKey === me.input.KEY.RIGHT) {
-      this.releaseRightKey();
-    }
+    this.releaseArrowKey();
     me.input.triggerKeyEvent(me.input.KEY.LEFT, true);
     game.data.playerVel = -1;
     this.pressedKey = me.input.KEY.LEFT;
   },
   pressRightKey: function () {
+    this.releaseArrowKey();
     me.input.triggerKeyEvent(me.input.KEY.RIGHT, true);
     game.data.playerVel = 1;
     this.pressedKey = me.input.KEY.RIGHT;
