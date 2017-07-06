@@ -21,30 +21,29 @@ me.Botapi = me.Object.extend({
     };
 
     this.ws.onmessage = function (event) {
+      var getData = function() {
+        return {
+          playerPos: that.getPlayerPos(),
+          gameObjects: that.getGameObjects(),
+          playerVel: that.getPlayerVel(),
+          fuel: that.getFuel()
+        };
+      };
+
       switch (event.data) {
         case CONFIG.RECEIVED_MESSAGES.MOVELEFT:
           console.log('move left');
           that.pressLeftKey();
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.PRESSEDLEFTKEY,
-            data: {
-              playerPos: that.getPlayerPos(),
-              gameObjects: that.getGameObjects(),
-              playerVel: that.getPlayerVel(),
-              fuel: that.getFuel()
-            }
+            data: getData()
           });
           break;
         case CONFIG.RECEIVED_MESSAGES.RELEASELEFT:
           that.releaseLeftKey();
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.RELEASEDLEFTKEY,
-            data: {
-              playerPos: that.getPlayerPos(),
-              gameObjects: that.getGameObjects(),
-              playerVel: that.getPlayerVel(),
-              fuel: that.getFuel()
-            }
+            data: getData()
           });
           break;
         case CONFIG.RECEIVED_MESSAGES.MOVERIGHT:
@@ -52,24 +51,14 @@ me.Botapi = me.Object.extend({
           that.pressRightKey();
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.PRESSEDRIGHTKEY,
-            data: {
-              playerPos: that.getPlayerPos(),
-              gameObjects: that.getGameObjects(),
-              playerVel: that.getPlayerVel(),
-              fuel: that.getFuel()
-            }
+            data: getData()
           });
           break;
         case CONFIG.RECEIVED_MESSAGES.RELEASERIGHT:
           that.releaseRightKey();
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.RELEASEDRIGHTKEY,
-            data: {
-              playerPos: that.getPlayerPos(),
-              gameObjects: that.getGameObjects(),
-              playerVel: that.getPlayerVel(),
-              fuel: that.getFuel()
-            }
+            data: getData()
           });
           break;
         case CONFIG.RECEIVED_MESSAGES.RELEASEARROWKEY:
@@ -77,12 +66,7 @@ me.Botapi = me.Object.extend({
           that.releaseArrowKey();
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.RELEASEDARROWKEY,
-            data: {
-              playerPos: that.getPlayerPos(),
-              gameObjects: that.getGameObjects(),
-              playerVel: that.getPlayerVel(),
-              fuel: that.getFuel()
-            }
+            data: getData()
           });
           break;
         case CONFIG.RECEIVED_MESSAGES.GETPLAYERPOS:
@@ -114,12 +98,7 @@ me.Botapi = me.Object.extend({
           console.log('Get game state');
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.GAMESTATE,
-            data: {
-              playerPos: that.getPlayerPos(),
-              gameObjects: that.getGameObjects(),
-              playerVel: that.getPlayerVel(),
-              fuel: that.getFuel()
-            }
+            data: getData()
           });
           break;
         case CONFIG.RECEIVED_MESSAGES.GETBOARD:
