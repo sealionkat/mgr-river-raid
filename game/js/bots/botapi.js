@@ -5,6 +5,13 @@ me.Botapi = me.Object.extend({
   initBoard: function () {
     this.board = me.video.renderer.getContext2d(me.video.renderer.canvas);
   },
+  initTimer: function() {
+    this.startTime = new Date();
+  },
+  stopTimer: function() {
+    this.stopTime = new Date();
+    this.elapsed = this.stopTime - this.startTime;
+  },
   initWebSockets: function (botOptions) {
     var deferred = Q.defer();
     var that = this;
@@ -82,6 +89,7 @@ me.Botapi = me.Object.extend({
         case CONFIG.RECEIVED_MESSAGES.BOTCREATED:
           console.log('Botcreated');
           that.initBoard();
+          that.initTimer();
           that.sendStringMessage({
             type: CONFIG.SENT_MESSAGES.IDLE,
             data: {
@@ -122,7 +130,15 @@ me.Botapi = me.Object.extend({
     return typeof this.ws !== 'undefined' && this.ws !== null;
   },
   sendGameOver: function () {
-    this.sendStringMessage({type: CONFIG.SENT_MESSAGES.GAMEOVER, data: null});
+    this.stopTimer();
+    this.sendStringMessage({
+      type: CONFIG.SENT_MESSAGES.GAMEOVER,
+      data: {
+        time: this.elapsed,
+        score: game.data.score,
+        fuel: game.data.fuel
+      }
+    });
   },
   sendReplay: function () {
     this.sendStringMessage({type: CONFIG.SENT_MESSAGES.REPLAY, data: null});
