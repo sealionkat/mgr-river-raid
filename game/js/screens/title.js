@@ -31,6 +31,7 @@ game.TitleScreen = me.ScreenObject.extend({
 
       this.handler = me.event.subscribe(me.event.KEYDOWN, function(action, keyCode, edge) {
         if(action === 'human') {
+          me.game.bot = null;
           me.state.change(me.state.PLAY);
         } else if(action === 'simple') {
           me.game.bot = new me.Botapi();

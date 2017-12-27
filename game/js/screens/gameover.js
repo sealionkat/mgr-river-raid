@@ -22,7 +22,7 @@ game.GameoverScreen = me.ScreenObject.extend({
       }
     })), 2);
 
-    if (me.game.bot.botType === 'rlc') { // it's learning mode
+    if (me.game.bot && me.game.bot.botType === 'rlc') { // it's learning mode
       if(!me.game.bot.isWebSocketOpen()) {
         me.game.bot = new me.Botapi();
         console.log('rlbot learning');

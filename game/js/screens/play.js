@@ -35,7 +35,7 @@ game.PlayScreen = me.ScreenObject.extend({
 		me.game.world.removeChild(this.enemyGenerator);
 		me.game.world.removeChild(this.fuelGenerator);
 
-		if (typeof me.game.bot !== 'undefined') {
+		if (typeof me.game.bot !== 'undefined' && me.game.bot !== null) {
 			me.game.bot.sendGameOver();
 		}
 
