@@ -156,9 +156,8 @@ me.Botapi = me.Object.extend({
     return this.board.getImageData(0, 0, CONFIG.BACKGROUND.WIDTH, CONFIG.BACKGROUND.HEIGHT);
   },
   getGameObjects: function () {
-    var objects = _.cloneDeep(me.game.world.children);
     var filteredObjects = [];
-    objects = objects.filter(function (item) {
+    var objects = me.game.world.children.filter(function (item) {
       switch (item.type) {
         case CONFIG.NAMES.ENEMY:
         case CONFIG.NAMES.BULLETP:
