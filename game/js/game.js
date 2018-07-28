@@ -21,6 +21,7 @@ var game = {
       });
     }
 
+    me.sys.pauseOnBlur = false;
     me.loader.onload = this.loaded.bind(this);
     me.loader.preload(game.resources);
     me.state.change(me.state.LOADING);
