@@ -19,11 +19,11 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-download-electron": "^2.1.2",
     "grunt-eslint": "^19.0.0",
-    "grunt-processhtml": "^0.4.1",
+    "grunt-processhtml": "^0.4.2",
     "grunt-replace": "^1.0.1"
   },
   "dependencies": {
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.11",
     "q": "^1.4.1"
   }
 }
